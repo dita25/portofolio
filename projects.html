@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <meta name="description" content="Portfolio of data analysis and web development projects showcasing skills in Python, Tableau, and Power BI."/>
+  <meta name="keywords" content="projects, portfolio, data analysis, tableau, power bi, dashboard"/>
+  <meta property="og:title" content="Projects — Dita Anggraini"/>
+  <meta property="og:description" content="Showcase of completed data and development projects."/>
+  <meta property="og:url" content="https://ditaanggraini.com/projects"/>
+  <title>Projects — Dita Anggraini</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" font-display="swap"/>
+  <link rel="stylesheet" href="src/css/style.css"/>
+  <style>
+    /* ── PROJECT DETAIL MODAL (viewer) ─────────────────────────── */
+    #modal-detail { z-index: 310; }
+    .detail-hero {
+      width: 100%;
+      aspect-ratio: 16/9;
+      background: var(--bg2);
+      border-radius: var(--r);
+      overflow: hidden;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    .detail-hero img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+    }
+    .detail-hero .ph-icon {
+      color: var(--bdr2);
+    }
+    .detail-tags { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 16px; }
+    .detail-tag {
+      padding: 4px 12px;
+      border: 1px solid var(--bdr);
+      border-radius: var(--pill);
+      font-size: .72rem;
+      color: var(--muted);
+    }
+    .detail-desc { font-size: .92rem; color: var(--muted); line-height: 1.8; margin-bottom: 20px; }
+    .detail-result {
+      background: var(--bg2);
+      border-left: 3px solid var(--txt);
+      padding: 12px 16px;
+      border-radius: 0 var(--r) var(--r) 0;
+      font-size: .85rem;
+      color: var(--muted);
+      margin-bottom: 24px;
+    }
+    .detail-result strong { color: var(--txt); display: block; font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 4px; }
+    .detail-links { display: flex; flex-wrap: wrap; gap: 10px; }
+    .detail-link-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 10px 20px;
+      border-radius: var(--pill);
+      font-size: .83rem;
+      font-weight: 500;
+      border: 1.5px solid var(--bdr2);
+      background: transparent;
+      color: var(--txt);
+      cursor: pointer;
+      text-decoration: none;
+      transition: background .2s, border-color .2s, transform .2s;
+    }
+    .detail-link-btn:hover { background: var(--bg2); border-color: var(--txt); transform: translateY(-1px); }
+    .detail-link-btn.primary { background: var(--txt); color: var(--bg); border-color: var(--txt); }
+    .detail-link-btn.primary:hover { opacity: .82; }
+    .detail-link-icon { font-size: 14px; }
+    .no-links { font-size: .83rem; color: var(--faint); font-style: italic; }
+
+    /* ── MULTI-LINK BUILDER (admin form) ────────────────────────── */
+    .link-builder { display: flex; flex-direction: column; gap: 10px; }
+    .link-row {
+      display: grid;
+      grid-template-columns: 120px 1fr auto;
+      gap: 8px;
+      align-items: center;
+    }
+    .link-row select, .link-row input { margin: 0; }
+    .link-remove {
+      background: none;
+      border: 1px solid #fca5a5;
+      color: #b91c1c;
+      border-radius: var(--pill);
+      padding: 6px 10px;
+      font-size: .75rem;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .link-add-btn {
+      background: none;
+      border: 1px dashed var(--bdr2);
+      color: var(--muted);
+      border-radius: var(--r);
+      padding: 8px;
+      font-size: .8rem;
+      cursor: pointer;
+      transition: border-color .2s, color .2s;
+    }
+    .link-add-btn:hover { border-color: var(--txt); color: var(--txt); }
+
+    /* ── IMAGE UPLOAD AREA ──────────────────────────────────────── */
+    .img-upload-area {
+      border: 2px dashed var(--bdr2);
+      border-radius: var(--r);
+      padding: 24px;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color .2s, background .2s;
+      position: relative;
+    }
+    .img-upload-area:hover { border-color: var(--txt); background: var(--bg2); }
+    .img-upload-area input[type=file] {
+      position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%;
+    }
+    .img-upload-area .upload-icon { font-size: 1.5rem; margin-bottom: 8px; }
+    .img-upload-area p { font-size: .8rem; color: var(--muted); margin: 0; }
+    .img-upload-area p span { color: var(--txt); font-weight: 500; }
+    /* Preview: hidden by default via style, shown by JS */
+    /* Multi-image thumbnails in form */
+    .img-thumbs { display:flex;flex-wrap:wrap;gap:8px;margin-top:10px; }
+    .img-thumb-wrap {
+      position:relative;width:80px;height:60px;border-radius:8px;
+      overflow:hidden;border:1px solid var(--bdr);flex-shrink:0;
+    }
+    .img-thumb-wrap img { width:100%;height:100%;object-fit:cover; }
+    .img-thumb-del {
+      position:absolute;top:2px;right:2px;background:rgba(0,0,0,.6);
+      color:#fff;border:none;border-radius:50%;width:18px;height:18px;
+      font-size:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;
+    }
+    /* Detail slideshow */
+    .slideshow { position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;border-radius:var(--r);background:var(--bg2); }
+    .slide { display:none;width:100%;height:100%; }
+    .slide.active { display:flex;align-items:center;justify-content:center; }
+    .slide img { width:100%;height:100%;object-fit:cover; }
+    .slide-nav {
+      position:absolute;top:50%;transform:translateY(-50%);
+      background:rgba(0,0,0,.45);color:#fff;border:none;
+      border-radius:50%;width:36px;height:36px;font-size:1rem;
+      cursor:pointer;display:flex;align-items:center;justify-content:center;
+      transition:background .2s;z-index:5;
+    }
+    .slide-nav:hover { background:rgba(0,0,0,.7); }
+    .slide-prev { left:10px; }
+    .slide-next { right:10px; }
+    .slide-dots { position:absolute;bottom:10px;left:50%;transform:translateX(-50%);display:flex;gap:6px; }
+    .slide-dot {
+      width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.5);
+      cursor:pointer;border:none;transition:background .2s;
+    }
+    .slide-dot.active { background:#fff; }
+
+    /* Category filter pills */
+    .filter-pill {
+      padding: 5px 14px;
+      border-radius: var(--pill);
+      border: 1px solid var(--bdr);
+      background: transparent;
+      color: var(--muted);
+      font-size: .75rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background .2s, color .2s, border-color .2s;
+    }
+    .filter-pill:hover { border-color: var(--bdr2); color: var(--txt); }
+    .filter-pill.active { background: var(--txt); color: var(--bg); border-color: var(--txt); }
+
+    /* card clickable cursor */
+    .pcard { cursor: pointer; }
+    .pcard-img img { display: block; }
+
+    /* CERT detail modal adjustments */
+    .cert-detail-img {
+      width: 100%; aspect-ratio: 4/3;
+      object-fit: contain;
+      background: var(--bg2);
+      border-radius: var(--r);
+      margin-bottom: 20px;
+    }
+
+    @media (max-width: 600px) {
+      .link-row { grid-template-columns: 1fr; }
+      .detail-modal { max-width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+<nav id="navbar">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">Dita.</a>
+    <ul class="nav-pages">
+      <li><a href="index.html" data-page="home">Home</a></li>
+      <li><a href="experience.html" data-page="experience">Experience</a></li>
+      <li><a href="projects.html" data-page="projects">Projects</a></li>
+      <li><a href="certifications.html" data-page="certifications">Certifications</a></li>
+      <li><a href="contact.html" data-page="contact">Contact</a></li>
+    </ul>
+    <button id="theme-tog" aria-label="Toggle dark mode">☀ / ☾</button>
+    <button id="ham" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<div class="mob-drawer" id="mob-drawer">
+  <ul>
+    <li><a href="index.html" data-page="home">Home</a></li>
+    <li><a href="experience.html" data-page="experience">Experience</a></li>
+    <li><a href="projects.html" data-page="projects">Projects</a></li>
+    <li><a href="certifications.html" data-page="certifications">Certifications</a></li>
+    <li><a href="contact.html" data-page="contact">Contact</a></li>
+  </ul>
+</div>
+
+<div class="page-wrap">
+  <div class="page-hero">
+    <div class="wrap">
+      <span class="tag">Work & Projects</span>
+      <h1>Projects &amp; <em>Case Studies</em></h1>
+      <p>From financial automation systems to WebXR educational platforms world projects with measurable impact.</p>
+    </div>
+  </div>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section-ctrl">
+        <h2 class="sh" style="margin-bottom:0">All Projects</h2>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+          <!-- Category filter (visible to all) -->
+          <div id="filter-wrap" style="display:flex;gap:6px;flex-wrap:wrap"></div>
+          <!-- Add button (admin only) -->
+          <button class="btn btn-p btn-sm admin-only" data-saved-display="inline-flex"
+                  onclick="openAddModal()">+ Add Project</button>
+        </div>
+      </div>
+      <div class="pgrid" id="proj-list"></div>
+    </div>
+  </section>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <p>© 2025 Dita Anggraini Puspitasari</p>
+    <p>State University of Malang</p>
+  </div>
+</footer>
+
+<!-- ══════════════════════════════════════════════════════════
+     PROJECT DETAIL MODAL (semua orang bisa lihat)
+════════════════════════════════════════════════════════════ -->
+<div class="modal-backdrop" id="modal-detail">
+  <div class="modal" style="max-width:680px" role="dialog" aria-modal="true" aria-labelledby="detail-title">
+    <div class="modal-header">
+      <h3 class="modal-title" id="detail-title"></h3>
+      <button class="modal-close" onclick="closeModal('modal-detail')" aria-label="Close">✕</button>
+    </div>
+
+    <!-- Slideshow / placeholder -->
+    <div id="detail-slideshow-wrap">
+      <!-- rendered by openDetail() -->
+    </div>
+
+    <!-- Meta -->
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:12px">
+      <div class="detail-tags" id="detail-tags" style="margin-bottom:0"></div>
+      <span style="font-size:.75rem;color:var(--faint);font-weight:500" id="detail-year"></span>
+    </div>
+
+    <!-- Description -->
+    <p class="detail-desc" id="detail-desc"></p>
+
+    <!-- Result / achievement -->
+    <div class="detail-result" id="detail-result-wrap" style="display:none">
+      <strong>Key Achievement</strong>
+      <span id="detail-result"></span>
+    </div>
+
+    <!-- Links section -->
+    <div id="detail-links-section">
+      <p style="font-size:.75rem;font-weight:500;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px">Open Project</p>
+      <div class="detail-links" id="detail-links"></div>
+    </div>
+
+    <!-- Admin edit button inside detail -->
+    <div class="admin-only" data-saved-display="flex" style="margin-top:20px;padding-top:20px;border-top:1px solid var(--bdr);display:flex;gap:10px">
+      <button class="btn btn-o btn-sm" id="detail-edit-btn">✏ Edit Project</button>
+      <button class="btn btn-sm" style="border:1px solid #fca5a5;color:#b91c1c;background:transparent" id="detail-delete-btn">✕ Delete</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     ADD / EDIT PROJECT MODAL (admin only)
+════════════════════════════════════════════════════════════ -->
+<div class="modal-backdrop admin-only" id="modal-proj">
+  <div class="modal" style="max-width:600px" role="dialog" aria-modal="true" aria-labelledby="modal-proj-title">
+    <div class="modal-header">
+      <h3 class="modal-title" id="modal-proj-title">Add Project</h3>
+      <button class="modal-close" onclick="closeModal('modal-proj')" aria-label="Close">✕</button>
+    </div>
+    <form id="proj-form" onsubmit="saveProj(); return false;">
+      <input type="hidden" id="proj-edit-id"/>
+
+      <!-- Multi-image upload -->
+    <div class="form-group">
+      <label>Gambar Project (bisa lebih dari satu, gambar pertama = cover)</label>
+      <div class="img-upload-area" id="img-upload-area">
+        <input type="file" id="proj-img-file" accept="image/*" multiple onchange="handleImgUpload(this)"/>
+        <div class="upload-icon">🖼</div>
+        <p><span>Klik untuk upload</span> — bisa pilih beberapa gambar sekaligus</p>
+        <p style="margin-top:4px;font-size:.72rem;opacity:.7">PNG, JPG, WEBP — maks 2MB per gambar</p>
+      </div>
+      <div class="img-thumbs" id="img-thumbs-wrap"></div>
+    </div>
+
+    <div class="form-group">
+      <label>Project Title *</label>
+      <input type="text" id="proj-title" placeholder="e.g. Automated Financial Reporting System"/>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Year</label>
+        <input type="text" id="proj-year" placeholder="2024"/>
+      </div>
+      <div class="form-group">
+        <label>Category</label>
+        <select id="proj-category">
+          <option value="Data Analysis">Data Analysis</option>
+          <option value="Web Development">Web Development</option>
+          <option value="Machine Learning">Machine Learning</option>
+          <option value="Dashboard">Dashboard</option>
+          <option value="Mobile App">Mobile App</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Tags / Tech Stack (comma-separated)</label>
+      <input type="text" id="proj-tags" placeholder="Python, Tableau, SQL"/>
+    </div>
+    <div class="form-group">
+      <label>Description *</label>
+      <textarea id="proj-desc" rows="4" placeholder="Jelaskan project ini — apa yang dilakukan, metodologi, dan dampaknya..."></textarea>
+    </div>
+    <div class="form-group">
+      <label>Key Achievement / Result</label>
+      <input type="text" id="proj-result" placeholder="e.g. 94% reduction in report time"/>
+    </div>
+
+    <!-- Multi-link builder -->
+    <div class="form-group">
+      <label>Links (GitHub, Tableau, PDF, Live Demo, dll)</label>
+      <div class="link-builder" id="link-builder"></div>
+      <button type="button" class="link-add-btn" onclick="addLinkRow()" style="width:100%;margin-top:8px">+ Tambah Link</button>
+    </div>
+
+    <div class="modal-footer">
+      <button type="button" class="btn btn-o btn-sm" onclick="closeModal('modal-proj')">Cancel</button>
+      <button type="submit" class="btn btn-p btn-sm">Simpan Project</button>
+    </div>
+    </form>
+  </div>
+</div>
+
+<div id="toast"></div>
+<div id="admin-bar" onclick="promptAdminLogin()" title="Klik untuk keluar admin mode">
+  <div class="admin-dot"></div>
+  Admin Mode Aktif — Klik untuk keluar
+</div>
+
+<script src="src/js/constants.js"></script>
+<script src="src/js/shared.js"></script>
+<script src="src/js/supabase-client.js"></script>
+<script>
+/* ══════════════════════════════════════════════════════════
+   DATA — Default projects dari CV
+════════════════════════════════════════════════════════════ */
+const DEFAULT_PROJ = [
+  {
+    id:'p1', title:'Automated Financial Reporting & Analysis System',
+    year:'2024', category:'Data Analysis',
+    tags:['Excel','VBA','Power Query','Financial Modeling'],
+    desc:'Excel-based system processing 300+ monthly transactions with 100% accuracy. Reduced report time by 94% via VBA macros and Power Query automation; enabled 15% budget optimization through pivot table trend analysis. Template subsequently adopted by 3 other departments.',
+    result:'94% reduction in report generation time (4 hrs → 15 min)',
+    imgs:[],
+    links:[{ type:'Excel File', label:'Excel Template', url:'' }]
+  },
+  {
+    id:'p2', title:'SIDIKAR – Cultural Tourism & E-Commerce Platform',
+    year:'2024', category:'Web Development',
+    tags:['Laravel 9','PHP','MySQL','Figma'],
+    desc:'Full-stack Laravel 9 platform for Dinoyo ceramic artisans enabling online sales and cultural tourism discovery. Achieved 500+ monthly visitors, 85% user satisfaction, 92% task completion rate (SUS score 78). Generated 30% increase in artisan online inquiries.',
+    result:'30% increase in online inquiries · SUS score 78',
+    imgs:[],
+    links:[{ type:'GitHub', label:'Source Code', url:'' }]
+  },
+  {
+    id:'p3', title:'Virtual Nusantara – WebXR Educational Platform',
+    year:'2024', category:'Web Development',
+    tags:['WebXR','JavaScript','Next.js','Education'],
+    desc:'Immersive WebXR tours of Indonesian cultural heritage sites, piloted across 5 schools with 300+ students. Demonstrated 45% improvement in knowledge retention compared to traditional methods.',
+    result:'45% knowledge retention improvement across 5 schools',
+    imgs:[],
+    links:[{ type:'Live Demo', label:'Live Demo', url:'' }]
+  },
+  {
+    id:'p4', title:'Sales Analytics & Customer Insights Dashboard',
+    year:'2023', category:'Data Analysis',
+    tags:['Python','Pandas','Matplotlib','RFM Segmentation'],
+    desc:'Python (Pandas, Matplotlib) analysis of 250+ transactions. RFM segmentation identified 3 distinct customer personas. Data-driven recommendations yielded 12% profit margin increase and 28% repeat purchase rate improvement.',
+    result:'12% profit margin increase · 28% repeat purchase rate',
+    imgs:[],
+    links:[{ type:'GitHub', label:'GitHub Repo', url:'' }]
+  },
+  {
+    id:'p5', title:'Thyroid Health Education & Symptom Checker',
+    year:'2023', category:'Web Development',
+    tags:['PHP','MySQL','Health Tech'],
+    desc:'PHP health information platform synthesizing 20+ peer-reviewed sources into accessible content. Served 150+ monthly users with an 88% comprehension rate on post-visit assessments.',
+    result:'88% comprehension rate · 150+ monthly users',
+    imgs:[],
+    links:[{ type:'Live Demo', label:'Visit Platform', url:'' }]
+  }
+];
+
+const PROJ_KEY = 'dita-projects';
+function loadProj() {
+  const raw = Store.get(PROJ_KEY, null);
+  return raw === null ? DEFAULT_PROJ : raw;
+}
+
+/* ── LINK TYPE CONFIG ───────────────────────────────────── */
+const LINK_TYPES = {
+  'GitHub':     { icon:'🐙', primary: false },
+  'Live Demo':  { icon:'🌐', primary: true  },
+  'Tableau':    { icon:'📊', primary: true  },
+  'Google Sheets':{ icon:'📋', primary: false },
+  'PDF Report': { icon:'📄', primary: false },
+  'Figma':      { icon:'🎨', primary: false },
+  'YouTube':    { icon:'▶',  primary: false },
+  'Excel File': { icon:'📗', primary: false },
+  'Other':      { icon:'🔗', primary: false }
+};
+
+/* ── PLACEHOLDER ICONS ──────────────────────────────────── */
+const PH_ICONS = [
+  `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" width="48" height="48"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>`,
+  `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" width="48" height="48"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>`,
+  `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" width="48" height="48"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>`,
+  `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" width="48" height="48"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>`,
+  `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" width="48" height="48"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>`
+];
+
+/* ══ FILTER STATE ══════════════════════════════════════════════════════════ */
+let _activeFilter = 'All';
+
+function renderFilterPills() {
+  const data = loadProj();
+  const cats = ['All', ...new Set(data.map(p => p.category).filter(Boolean))];
+  const wrap = document.getElementById('filter-wrap');
+  if (!wrap) return;
+  wrap.innerHTML = cats.map(cat => `
+    <button class="filter-pill ${cat === _activeFilter ? 'active' : ''}"
+            onclick="setFilter('${cat}')">${cat}</button>
+  `).join('');
+}
+
+function setFilter(cat) {
+  _activeFilter = cat;
+  renderFilterPills();
+  renderProj();
+}
+
+/* ══════════════════════════════════════════════════════════
+   RENDER CARDS
+════════════════════════════════════════════════════════════ */
+function renderProj() {
+  const list = document.getElementById('proj-list');
+  const allData = loadProj();
+  const data = _activeFilter === 'All' ? allData : allData.filter(p => p.category === _activeFilter);
+  if (!data.length) {
+    list.innerHTML = `<div class="empty" style="grid-column:1/-1"><p>Belum ada project. Klik "+ Add Project" untuk menambahkan.</p></div>`;
+    return;
+  }
+  list.innerHTML = data.map((p, i) => `
+    <article class="pcard fu" style="transition-delay:${i*0.07}s" onclick="openDetail('${p.id}')">
+      <div class="pcard-img" style="color:var(--bdr2);position:relative">
+        ${(p.imgs && p.imgs.length)
+          ? `<img src="${p.imgs[0]}" alt="${p.title}" style="width:100%;height:100%;object-fit:cover"/>`
+          : PH_ICONS[i % PH_ICONS.length]
+        }
+        <div class="pcard-ov">Lihat Detail →</div>
+      </div>
+      <div class="pcard-body">
+        <div class="pcard-tags">
+          ${p.tags.slice(0,3).map(t=>`<span>${t}</span>`).join('')}
+          ${p.year ? `<span style="margin-left:auto">${p.year}</span>` : ''}
+        </div>
+        <h3>${p.title}</h3>
+        <p>${p.desc.length > 100 ? p.desc.slice(0,100)+'…' : p.desc}</p>
+        ${p.result ? `<p style="font-size:.75rem;color:var(--faint);border-left:2px solid var(--bdr);padding-left:10px;margin-bottom:14px">📊 ${p.result}</p>` : ''}
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-top:auto">
+          <span style="font-size:.78rem;color:var(--muted);font-weight:500">Klik untuk detail →</span>
+          <div class="admin-only" data-saved-display="flex" style="display:flex;gap:6px" onclick="event.stopPropagation()">
+            <button style="padding:4px 10px;border-radius:99px;font-size:.72rem;border:1px solid var(--bdr);background:var(--bg);color:var(--muted);cursor:pointer" onclick="editProj('${p.id}')">✏ Edit</button>
+            <button style="padding:4px 10px;border-radius:99px;font-size:.72rem;border:1px solid #fca5a5;background:var(--bg);color:#b91c1c;cursor:pointer" onclick="deleteProj('${p.id}')">✕</button>
+          </div>
+        </div>
+      </div>
+    </article>
+  `).join('');
+  initFadeUp();
+  applyAdminUI();
+}
+
+/* ══════════════════════════════════════════════════════════
+   PROJECT DETAIL MODAL
+════════════════════════════════════════════════════════════ */
+function openDetail(id) {
+  const p = loadProj().find(x => x.id === id);
+  if (!p) return;
+
+  /* Title & year */
+  document.getElementById('detail-title').textContent = p.title;
+  document.getElementById('detail-year').textContent  = p.year || '';
+
+  /* Slideshow */
+  const swrap = document.getElementById('detail-slideshow-wrap');
+  const imgs = p.imgs && p.imgs.length ? p.imgs : [];
+  if (imgs.length === 0) {
+    const idx = loadProj().findIndex(x => x.id === id);
+    swrap.innerHTML = `<div class="detail-hero">${PH_ICONS[idx % PH_ICONS.length]}</div>`;
+  } else if (imgs.length === 1) {
+    swrap.innerHTML = `<div class="detail-hero"><img src="${imgs[0]}" alt="${p.title}" style="width:100%;height:100%;object-fit:cover"/></div>`;
+  } else {
+    const slides = imgs.map((src,i) =>
+      `<div class="slide${i===0?' active':''}"><img src="${src}" alt="slide ${i+1}"/></div>`
+    ).join('');
+    const dots = imgs.map((_,i) =>
+      `<button class="slide-dot${i===0?' active':''}" onclick="goSlide(${i})"></button>`
+    ).join('');
+    swrap.innerHTML = `
+      <div class="slideshow" id="detail-slideshow">
+        ${slides}
+        ${imgs.length>1?`<button class="slide-nav slide-prev" onclick="prevSlide()">‹</button>
+        <button class="slide-nav slide-next" onclick="nextSlide()">›</button>
+        <div class="slide-dots">${dots}</div>`:''}
+      </div>`;
+    window._curSlide = 0;
+    window._totalSlides = imgs.length;
+  }
+
+  /* Tags */
+  document.getElementById('detail-tags').innerHTML =
+    p.tags.map(t => `<span class="detail-tag">${t}</span>`).join('');
+
+  /* Desc */
+  document.getElementById('detail-desc').textContent = p.desc;
+
+  /* Result */
+  const resWrap = document.getElementById('detail-result-wrap');
+  if (p.result) {
+    document.getElementById('detail-result').textContent = p.result;
+    resWrap.style.display = '';
+  } else {
+    resWrap.style.display = 'none';
+  }
+
+  /* Links */
+  const linksEl = document.getElementById('detail-links');
+  const linksSection = document.getElementById('detail-links-section');
+  const validLinks = (p.links || []).filter(l => l.url && l.url.trim());
+  if (validLinks.length) {
+    linksSection.style.display = '';
+    linksEl.innerHTML = validLinks.map(l => {
+      const cfg = LINK_TYPES[l.type] || LINK_TYPES['Other'];
+      return `<a href="${l.url}" target="_blank" rel="noopener"
+                 class="detail-link-btn ${cfg.primary ? 'primary' : ''}">
+                <span class="detail-link-icon">${cfg.icon}</span>
+                ${l.label || l.type}
+              </a>`;
+    }).join('');
+  } else {
+    linksSection.style.display = 'none';
+  }
+
+  /* Admin buttons inside detail */
+  document.getElementById('detail-edit-btn').onclick   = () => { closeModal('modal-detail'); editProj(id); };
+  document.getElementById('detail-delete-btn').onclick = () => { closeModal('modal-detail'); deleteProj(id); };
+
+  applyAdminUI();
+  openModal('modal-detail');
+}
+
+/* ══════════════════════════════════════════════════════════
+   IMAGE UPLOAD (base64 — stored in localStorage)
+════════════════════════════════════════════════════════════ */
+/* Multi-image state */
+let _editImgs = [];  /* array of base64 strings */
+
+function handleImgUpload(input) {
+  const files = Array.from(input.files);
+  if (!files.length) return;
+  let loaded = 0;
+  files.forEach(file => {
+    if (file.size > 2 * 1024 * 1024) { showToast('⚠ ' + file.name + ' terlalu besar (maks 2MB), dilewati.'); loaded++; checkDone(); return; }
+    const reader = new FileReader();
+    reader.onload = e => { _editImgs.push(e.target.result); loaded++; checkDone(); };
+    reader.readAsDataURL(file);
+  });
+  function checkDone() { if (loaded === files.length) { input.value=''; renderThumbs(); } }
+}
+
+function renderThumbs() {
+  const wrap = document.getElementById('img-thumbs-wrap');
+  if (!wrap) return;
+  wrap.innerHTML = _editImgs.map((src, i) => `
+    <div class="img-thumb-wrap">
+      <img src="${src}" alt="img ${i+1}"/>
+      <button type="button" class="img-thumb-del" onclick="removeThumb(${i})" title="Hapus">✕</button>
+    </div>
+  `).join('');
+  const hint = document.querySelector('#img-upload-area p');
+  if (hint) hint.innerHTML = `<span>${_editImgs.length} gambar</span> — klik untuk tambah lagi`;
+}
+
+function removeThumb(i) {
+  _editImgs.splice(i, 1);
+  renderThumbs();
+}
+
+function clearImg() {
+  _editImgs = [];
+  document.getElementById('proj-img-file').value = '';
+  const wrap = document.getElementById('img-thumbs-wrap');
+  if (wrap) wrap.innerHTML = '';
+  const hint = document.querySelector('#img-upload-area p');
+  if (hint) hint.innerHTML = '<span>Klik untuk upload</span> — bisa pilih beberapa gambar sekaligus';
+}
+
+/* Slideshow navigation (detail modal) */
+function goSlide(idx) {
+  const slides = document.querySelectorAll('#detail-slideshow .slide');
+  const dots   = document.querySelectorAll('#detail-slideshow .slide-dot');
+  slides.forEach((s,i) => s.classList.toggle('active', i===idx));
+  dots.forEach((d,i)   => d.classList.toggle('active', i===idx));
+  window._curSlide = idx;
+}
+function nextSlide() { goSlide((window._curSlide + 1) % window._totalSlides); }
+function prevSlide() { goSlide((window._curSlide - 1 + window._totalSlides) % window._totalSlides); }
+
+/* ══════════════════════════════════════════════════════════
+   MULTI-LINK BUILDER
+════════════════════════════════════════════════════════════ */
+function addLinkRow(type='GitHub', label='', url='') {
+  const builder = document.getElementById('link-builder');
+  const row = document.createElement('div');
+  row.className = 'link-row';
+  row.innerHTML = `
+    <select class="link-type-sel" style="margin:0">
+      ${Object.keys(LINK_TYPES).map(t =>
+        `<option value="${t}" ${t===type?'selected':''}>${t}</option>`
+      ).join('')}
+    </select>
+    <input type="text" class="link-label-in" placeholder="Label tombol" value="${label}" style="margin:0"/>
+    <input type="url"  class="link-url-in"   placeholder="https://..." value="${url}"   style="margin:0;min-width:0"/>
+    <button type="button" class="link-remove" onclick="this.parentElement.remove()">✕</button>
+  `;
+  /* Auto-fill label when type changes */
+  row.querySelector('.link-type-sel').addEventListener('change', function() {
+    const labelIn = row.querySelector('.link-label-in');
+    if (!labelIn.value || Object.keys(LINK_TYPES).includes(labelIn.value)) {
+      labelIn.value = this.value;
+    }
+  });
+  builder.appendChild(row);
+}
+
+function getLinksFromBuilder() {
+  return [...document.querySelectorAll('#link-builder .link-row')].map(row => ({
+    type:  row.querySelector('.link-type-sel').value,
+    label: row.querySelector('.link-label-in').value.trim(),
+    url:   row.querySelector('.link-url-in').value.trim()
+  }));
+}
+
+function clearLinkBuilder() {
+  document.getElementById('link-builder').innerHTML = '';
+}
+
+/* ══════════════════════════════════════════════════════════
+   SAVE / EDIT / DELETE
+════════════════════════════════════════════════════════════ */
+function openAddModal() {
+  clearProjForm();
+  document.getElementById('modal-proj-title').textContent = 'Add Project';
+  addLinkRow(); /* default 1 link row */
+  openModal('modal-proj');
+}
+
+function saveProj() {
+  const title    = document.getElementById('proj-title').value.trim();
+  const year     = document.getElementById('proj-year').value.trim();
+  const category = document.getElementById('proj-category').value;
+  const tags     = document.getElementById('proj-tags').value.split(',').map(t=>t.trim()).filter(Boolean);
+  const desc     = document.getElementById('proj-desc').value.trim();
+  const result   = document.getElementById('proj-result').value.trim();
+  const img      = _editImgs.slice();  /* copy of current imgs array */
+  const links    = getLinksFromBuilder();
+  const editId   = document.getElementById('proj-edit-id').value;
+
+  if (!title || !desc) { showToast('⚠ Judul dan Deskripsi wajib diisi.'); return; }
+
+  let data = loadProj();
+  let msg = '';
+  if (editId) {
+    // UPDATE: Sync to Supabase if available
+    if (supabaseClient) {
+      updateSupabaseProj(editId, {
+        title: title,
+        description: desc,
+        image_url: img.length > 0 ? img[0] : '',
+        link: links.length > 0 ? links[0].url : ''
+      }).catch(e => console.error('Supabase update error:', e));
+    }
+    data = data.map(p => p.id === editId
+      ? { ...p, title, year, category, tags, desc, result, imgs: img, links }
+      : p);
+    msg = '✓ Project diperbarui!';
+  } else {
+    const newId = genId();
+    // ADD: Sync to Supabase if available
+    if (supabaseClient) {
+      addSupabaseProj({
+        title: title,
+        description: desc,
+        image_url: img.length > 0 ? img[0] : '',
+        link: links.length > 0 ? links[0].url : ''
+      }).catch(e => console.error('Supabase add error:', e));
+    }
+    data.unshift({ id: newId, title, year, category, tags, desc, result, imgs: img, links });
+    msg = '✓ Project ditambahkan!';
+  }
+  Store.set(PROJ_KEY, data);
+  closeModal('modal-proj');
+  clearProjForm();
+  renderFilterPills();
+  renderProj();
+  showToast(msg);
+}
+
+function editProj(id) {
+  const p = loadProj().find(x => x.id === id);
+  if (!p) return;
+  clearProjForm();
+
+  document.getElementById('proj-edit-id').value    = id;
+  document.getElementById('proj-title').value      = p.title;
+  document.getElementById('proj-year').value       = p.year || '';
+  document.getElementById('proj-category').value   = p.category || 'Data Analysis';
+  document.getElementById('proj-tags').value       = p.tags.join(', ');
+  document.getElementById('proj-desc').value       = p.desc;
+  document.getElementById('proj-result').value     = p.result || '';
+  document.getElementById('modal-proj-title').textContent = 'Edit Project';
+
+  /* Restore multi-images */
+  _editImgs = (p.imgs || []).slice();
+  renderThumbs();
+
+  /* Restore links */
+  clearLinkBuilder();
+  (p.links || []).forEach(l => addLinkRow(l.type, l.label, l.url));
+  if (!p.links || !p.links.length) addLinkRow();
+
+  openModal('modal-proj');
+}
+
+function deleteProj(id) {
+  if (!confirm('Hapus project ini?')) return;
+  // DELETE: Sync to Supabase if available
+  if (supabaseClient) {
+    deleteSupabaseProj(id).catch(e => console.error('Supabase delete error:', e));
+  }
+  Store.set(PROJ_KEY, loadProj().filter(p => p.id !== id));
+  showToast('Project dihapus.');
+  renderFilterPills();
+  renderProj();
+}
+
+function clearProjForm() {
+  document.getElementById('proj-edit-id').value  = '';
+  document.getElementById('proj-title').value    = '';
+  document.getElementById('proj-year').value     = '';
+  document.getElementById('proj-tags').value     = '';
+  document.getElementById('proj-desc').value     = '';
+  document.getElementById('proj-result').value   = '';
+  clearImg();
+  _editImgs = [];
+  clearLinkBuilder();
+  document.getElementById('modal-proj-title').textContent = 'Add Project';
+}
+
+/* ══════════════════════════════════════════════════════════
+   INIT
+════════════════════════════════════════════════════════════ */
+document.addEventListener('DOMContentLoaded', () => {
+  initNav('projects');
+  renderFilterPills();
+  renderProj();
+});
+</script>
+</body>
+</html>

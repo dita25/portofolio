@@ -1,0 +1,35 @@
+# Node/npm
+node_modules/
+npm-debug.log
+.npm
+package-lock.json
+
+# OS files
+.DS_Store
+Thumbs.db
+.env
+.env.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Temp files
+*.tmp
+*.temp
+.cache/
+
+# Build outputs (if minified)
+dist/
+build/
+
+# Development
+localhost/
+local.dev
+
+# Sensitive files (if any)
+*.key
+*.pem

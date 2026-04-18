@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <meta name="description" content="Get in touch with Dita Anggraini. Open to internship opportunities, freelance data projects, and collaboration."/>
+  <meta name="keywords" content="contact, hire, freelance, data analyst, collaboration"/>
+  <meta property="og:title" content="Contact — Dita Anggraini"/>
+  <meta property="og:description" content="Let's work together. Reach out for opportunities and collaboration."/>
+  <meta property="og:url" content="https://ditaanggraini.com/contact"/>
+  <title>Contact — Dita Anggraini</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" font-display="swap"/>
+  <link rel="stylesheet" href="src/css/style.css"/>
+</head>
+<body>
+
+<nav id="navbar">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">Dita.</a>
+    <ul class="nav-pages">
+      <li><a href="index.html" data-page="home">Home</a></li>
+      <li><a href="experience.html" data-page="experience">Experience</a></li>
+      <li><a href="projects.html" data-page="projects">Projects</a></li>
+      <li><a href="certifications.html" data-page="certifications">Certifications</a></li>
+      <li><a href="contact.html" data-page="contact">Contact</a></li>
+    </ul>
+    <button id="theme-tog" aria-label="Toggle dark mode">☀ / ☾</button>
+    <button id="ham" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<div class="mob-drawer" id="mob-drawer">
+  <ul>
+    <li><a href="index.html" data-page="home">Home</a></li>
+    <li><a href="experience.html" data-page="experience">Experience</a></li>
+    <li><a href="projects.html" data-page="projects">Projects</a></li>
+    <li><a href="certifications.html" data-page="certifications">Certifications</a></li>
+    <li><a href="contact.html" data-page="contact">Contact</a></li>
+  </ul>
+</div>
+
+<div class="page-wrap">
+
+  <div class="page-hero">
+    <div class="wrap">
+      <span class="tag">Get In Touch</span>
+      <h1>Let's work <em>together</em>.</h1>
+      <p>Whether you have a project in mind, want to collaborate on data analysis, or just want to say hello my inbox is always open.</p>
+    </div>
+  </div>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="contact-grid">
+
+        <!-- Contact info -->
+        <div class="fu">
+          <span class="tag">Contact Info</span>
+          <h2 class="sh">Reach me <em>directly</em>.</h2>
+          <p class="contact-info">I'm currently open to internship opportunities, freelance data projects, and collaborative web development work.</p>
+
+          <div class="contact-items">
+            <!-- ✏️ Update all contact links below -->
+            <a href="mailto:ditaanggraini173@gmail.com" class="contact-item">
+              <span class="contact-icon">✉</span>
+              <div>
+                <p class="contact-label">Email</p>
+                <p class="contact-val">ditaanggraini173@gmail.com</p>
+              </div>
+            </a>
+            <a href="tel:+6281007548121" class="contact-item">
+              <span class="contact-icon">📱</span>
+              <div>
+                <p class="contact-label">Phone / WhatsApp</p>
+                <p class="contact-val">+62 810-0754-8121</p>
+              </div>
+            </a>
+            <a href="https://linkedin.com/in/dita-anggraini-5b5807343" target="_blank" rel="noopener" class="contact-item">
+              <span class="contact-icon">💼</span>
+              <div>
+                <p class="contact-label">LinkedIn</p>
+                <p class="contact-val">dita-anggraini-5b5807343</p>
+              </div>
+            </a>
+            <a href="https://github.com/dita25" target="_blank" rel="noopener" class="contact-item">
+              <span class="contact-icon">🐙</span>
+              <div>
+                <p class="contact-label">GitHub</p>
+                <p class="contact-val">github.com/dita25</p>
+              </div>
+            </a>
+            <div class="contact-item">
+              <span class="contact-icon">📍</span>
+              <div>
+                <p class="contact-label">Location</p>
+                <p class="contact-val">Ponorogo, East Java, Indonesia</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Download CV -->
+          <div style="margin-top:28px">
+            <!-- ✏️ Replace with actual CV path -->
+            <a href="./assets/cv-dita.pdf" class="btn btn-p" download>Download CV</a>
+          </div>
+        </div>
+
+        <!-- Contact form (mailto-based, no backend needed) -->
+        <div class="fu contact-form-card" style="transition-delay:.12s">
+          <h3>Send a Message</h3>
+          <p style="font-size:.83rem;color:var(--muted);margin-bottom:20px">
+            Have a question about my work or want to discuss a potential opportunity? Fill out the form below and I'll get back to you as soon as possible. 
+          </p>
+          <div class="form-group">
+            <label>Your Name</label>
+            <input type="text" id="cf-name" placeholder="Jane Smith"/>
+          </div>
+          <div class="form-group">
+            <label>Your Email</label>
+            <input type="email" id="cf-email" placeholder="jane@example.com"/>
+          </div>
+          <div class="form-group">
+            <label>Subject</label>
+            <input type="text" id="cf-subject" placeholder="Project Collaboration / Internship Offer / ..."/>
+          </div>
+          <div class="form-group">
+            <label>Message</label>
+            <textarea id="cf-msg" rows="5" placeholder="Hi Dita, I'd love to discuss..."></textarea>
+          </div>
+          <button class="btn btn-p" style="width:100%;justify-content:center;margin-top:8px" onclick="sendEmail()">
+            Send via Email Client →
+          </button>
+          <p style="font-size:.73rem;color:var(--faint);text-align:center;margin-top:12px">
+            Opens your default email app (Gmail, Outlook, etc.)
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Availability banner -->
+  <section class="section section-alt">
+    <div class="wrap" style="text-align:center">
+      <div style="display:inline-flex;align-items:center;gap:10px;background:var(--bg);border:1px solid var(--bdr);border-radius:var(--pill);padding:10px 24px;margin-bottom:24px">
+        <span style="width:8px;height:8px;background:#22c55e;border-radius:50%;display:inline-block;box-shadow:0 0 0 3px rgba(34,197,94,.2)"></span>
+        <span style="font-size:.82rem;font-weight:500">Available for opportunities</span>
+      </div>
+      <h2 class="sh center">Open to <em>new roles</em>.</h2>
+      <p style="color:var(--muted);max-width:50ch;margin:0 auto;font-size:.9rem">
+        Currently seeking internship or entry-level roles in <strong>Data Analytics</strong>, <strong>Business Intelligence</strong>,
+        or <strong>Full-Stack Web Development</strong>. Based in Ponorogo, East Java — open to remote work.
+      </p>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <p>© 2025 Dita Anggraini Puspitasari</p>
+    <p>State University of Malang</p>
+  </div>
+</footer>
+
+<div id="toast"></div>
+
+<div id="admin-bar" onclick="promptAdminLogin()" title="Klik untuk keluar admin mode">
+  <div class="admin-dot"></div>
+  Admin Mode Aktif — Klik untuk keluar
+</div>
+
+<script src="src/js/constants.js"></script>
+<script src="src/js/shared.js"></script>
+<script>
+function sendEmail() {
+  const name    = document.getElementById('cf-name').value.trim();
+  const email   = document.getElementById('cf-email').value.trim();
+  const subject = document.getElementById('cf-subject').value.trim();
+  const msg     = document.getElementById('cf-msg').value.trim();
+
+  // Validation
+  if (!msg) { 
+    showToast('⚠ Mohon tuliskan pesan Anda.'); 
+    return; 
+  }
+
+  if (email && !validateEmail(email)) {
+    showToast('⚠ Format email tidak valid.');
+    return;
+  }
+
+  if (!name) {
+    showToast('⚠ Mohon masukkan nama Anda.');
+    return;
+  }
+
+  // Build email
+  const to  = 'ditaanggraini173@gmail.com';
+  const sub = encodeURIComponent(subject || 'Portfolio Enquiry');
+  const body = encodeURIComponent(
+    `Nama: ${name}\nEmail: ${email || '(not provided)'}\n\n---MESSAGE---\n\n${msg}`
+  );
+  
+  try {
+    window.location.href = `mailto:${to}?subject=${sub}&body=${body}`;
+    showToast('✓ Membuka email client...');
+    // Clear form after a delay
+    setTimeout(() => {
+      document.getElementById('cf-name').value = '';
+      document.getElementById('cf-email').value = '';
+      document.getElementById('cf-subject').value = '';
+      document.getElementById('cf-msg').value = '';
+    }, 500);
+  } catch (err) {
+    showToast('⚠ Terjadi kesalahan. Silakan coba lagi.');
+    console.error('Email error:', err);
+  }
+}
+
+function validateEmail(email) {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  initNav('contact');
+  initFadeUp();
+  
+  // Enter key on form
+  document.getElementById('cf-msg').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && e.ctrlKey) {
+      sendEmail();
+    }
+  });
+});
+</script>
+</body>
+</html>

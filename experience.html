@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <meta name="description" content="Work experience and education history. Data Analyst roles and internships at leading tech companies."/>
+  <meta name="keywords" content="experience, work history, education, data analyst, internship"/>
+  <meta property="og:title" content="Experience — Dita Anggraini"/>
+  <meta property="og:description" content="Career path and professional journey."/>
+  <meta property="og:url" content="https://ditaanggraini.com/experience"/>
+  <title>Experience — Dita Anggraini</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" font-display="swap"/>
+  <link rel="stylesheet" href="src/css/style.css"/>
+</head>
+<body>
+
+<nav id="navbar">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">Dita.</a>
+    <ul class="nav-pages">
+      <li><a href="index.html" data-page="home">Home</a></li>
+      <li><a href="experience.html" data-page="experience">Experience</a></li>
+      <li><a href="projects.html" data-page="projects">Projects</a></li>
+      <li><a href="certifications.html" data-page="certifications">Certifications</a></li>
+      <li><a href="contact.html" data-page="contact">Contact</a></li>
+    </ul>
+    <button id="theme-tog" aria-label="Toggle dark mode">☀ / ☾</button>
+    <button id="ham" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<div class="mob-drawer" id="mob-drawer">
+  <ul>
+    <li><a href="index.html" data-page="home">Home</a></li>
+    <li><a href="experience.html" data-page="experience">Experience</a></li>
+    <li><a href="projects.html" data-page="projects">Projects</a></li>
+    <li><a href="certifications.html" data-page="certifications">Certifications</a></li>
+    <li><a href="contact.html" data-page="contact">Contact</a></li>
+  </ul>
+</div>
+
+<div class="page-wrap">
+
+  <div class="page-hero">
+    <div class="wrap">
+      <span class="tag">Career Path</span>
+      <h1>Experience &amp; <em>Journey</em></h1>
+      <p>From data analysis internships to student leadership a timeline of roles that shaped my skills in turning data into impact.</p>
+    </div>
+  </div>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section-ctrl">
+        <div>
+          <h2 class="sh" style="margin-bottom:0">Work Experience</h2>
+        </div>
+        <!-- ── ADD BUTTON (admin only) ──────────────────────── -->
+        <button class="btn btn-p btn-sm admin-only" data-saved-display="inline-flex" onclick="openModal('modal-exp')">+ Add Experience</button>
+      </div>
+      <div class="timeline" id="exp-list">
+        <!-- Rendered by JS -->
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-alt">
+    <div class="wrap">
+      <div class="section-ctrl">
+        <h2 class="sh" style="margin-bottom:0">Education</h2>
+        <button class="btn btn-p btn-sm admin-only" data-saved-display="inline-flex" onclick="openModal('modal-edu')">+ Add Education</button>
+      </div>
+      <div class="timeline" id="edu-list"></div>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <p>© 2025 Dita Anggraini Puspitasari</p>
+    <p>State University of Malang</p>
+  </div>
+</footer>
+
+<!-- ── ADD / EDIT EXPERIENCE MODAL ──────────────────────────── -->
+<div class="modal-backdrop admin-only" id="modal-exp">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-exp-title">
+    <div class="modal-header">
+      <h3 class="modal-title" id="modal-exp-title">Add Experience</h3>
+      <button class="modal-close" onclick="closeModal('modal-exp')" aria-label="Close">✕</button>
+    </div>
+    <input type="hidden" id="exp-edit-id"/>
+    <div class="form-group">
+      <label>Job Title *</label>
+      <input type="text" id="exp-title" placeholder="e.g. Data Analyst Intern"/>
+    </div>
+    <div class="form-group">
+      <label>Organisation / Company *</label>
+      <input type="text" id="exp-org" placeholder="e.g. Vinix Academy"/>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Start Date</label>
+        <input type="text" id="exp-start" placeholder="e.g. Feb 2025"/>
+      </div>
+      <div class="form-group">
+        <label>End Date</label>
+        <input type="text" id="exp-end" placeholder="e.g. May 2025 or Present"/>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Bullet Points (one per line)</label>
+      <textarea id="exp-bullets" rows="5" placeholder="Analyzed 15,000+ records using Python&#10;Built 4 Tableau dashboards&#10;..."></textarea>
+    </div>
+    <div class="form-group">
+      <label>Tools Used</label>
+      <input type="text" id="exp-tools" placeholder="Python, Tableau, SQL, Excel"/>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-o btn-sm" onclick="closeModal('modal-exp')">Cancel</button>
+      <button class="btn btn-p btn-sm" onclick="saveExp()">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── ADD / EDIT EDUCATION MODAL ───────────────────────────── -->
+<div class="modal-backdrop admin-only" id="modal-edu">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-edu-title">
+    <div class="modal-header">
+      <h3 class="modal-title" id="modal-edu-title">Add Education</h3>
+      <button class="modal-close" onclick="closeModal('modal-edu')" aria-label="Close">✕</button>
+    </div>
+    <input type="hidden" id="edu-edit-id"/>
+    <div class="form-group">
+      <label>Degree / Programme *</label>
+      <input type="text" id="edu-degree" placeholder="e.g. Bachelor in Informatics Engineering"/>
+    </div>
+    <div class="form-group">
+      <label>Institution *</label>
+      <input type="text" id="edu-inst" placeholder="e.g. State University of Malang"/>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Start Year</label>
+        <input type="text" id="edu-start" placeholder="2022"/>
+      </div>
+      <div class="form-group">
+        <label>End Year</label>
+        <input type="text" id="edu-end" placeholder="2026 (Expected)"/>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>GPA</label>
+        <input type="text" id="edu-gpa" placeholder="3.64 / 4.00"/>
+      </div>
+      <div class="form-group">
+        <label>Location</label>
+        <input type="text" id="edu-loc" placeholder="Malang, East Java"/>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Relevant Coursework (comma-separated)</label>
+      <input type="text" id="edu-courses" placeholder="Data Structures, Machine Learning, Database Systems"/>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-o btn-sm" onclick="closeModal('modal-edu')">Cancel</button>
+      <button class="btn btn-p btn-sm" onclick="saveEdu()">Save</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<!-- Admin mode indicator bar (hanya muncul saat admin login) -->
+<div id="admin-bar" onclick="promptAdminLogin()" title="Klik untuk keluar admin mode">
+  <div class="admin-dot"></div>
+  Admin Mode Aktif — Klik untuk keluar
+</div>
+
+<script src="src/js/constants.js"></script>
+<script src="src/js/shared.js"></script>
+<script src="src/js/supabase-client.js"></script>
+<script>
+/* ── DEFAULT DATA (from CV) ─────────────────────────────────── */
+const DEFAULT_EXP = [
+  {
+    id:'e1', title:'Data Analyst Intern',
+    org:'Inovasi Lentera Program - Vinix Academy',
+    start:'Feb 2025', end:'May 2025',
+    bullets:[
+      'Analyzed 15,000+ records from 3 real-world business datasets using Python (Pandas, NumPy); delivered actionable insights to program stakeholders.',
+      'Developed 4 interactive Tableau dashboards tracking sales performance, customer segmentation, and financial KPIs for small business clients.',
+      'Improved dataset completeness from 65% to 98% via systematic validation rules and automated Python cleaning scripts.',
+      'Built Orange Data Mining ML workflow achieving 87% accuracy in customer churn prediction; automated Looker Studio reporting reducing manual time by 75% (4 hrs → 1 hr/week).',
+      'Presented e-commerce capstone project to 5 industry experts commended for clear data storytelling and actionable recommendations.'
+    ],
+    tools:'Python, Tableau, Looker Studio, Orange Data Mining, SQL, Google Colab, Excel'
+  },
+  {
+    id:'e2', title:'General Treasurer',
+    org:'Student Association – Dept. of Electrical Engineering & Informatics, State University of Malang',
+    start:'Jan 2024', end:'Dec 2024',
+    bullets:[
+      'Managed Rp 15,000,000 annual budget across 20+ programs; maintained 100% accuracy handling 300+ monthly transactions via automated Excel system.',
+      'Reduced monthly report generation time by 94% (4 hrs → 15 min) through Excel VBA macros and Power Query automation.',
+      'Improved budget allocation efficiency by 15% using pivot table trend analysis; achieved 95% forecast accuracy via variance reporting.',
+      'Presented quarterly financial summaries to 50+ stakeholders; implemented digital document management for 500+ records, enabling 90% faster audit retrieval.'
+    ],
+    tools:'Excel (VBA, Power Query, Pivot Tables, VLOOKUP), Google Sheets, Financial Modeling, Budget Forecasting'
+  },
+  {
+    id:'e3', title:'Program Coordinator & Educational Lead',
+    org:'Community Service Program (KKN) - State University of Malang',
+    start:'Sep 2024', end:'Nov 2024',
+    bullets:[
+      'Coordinated 12 community development programs for 200+ residents and team of 15 with 100% on-time delivery.',
+      'Ran "EduFun" math program for 65 students (grades 1–3): 80% improvement in engagement, 70% improvement in assessment scores.',
+      'Conducted career guidance workshop for 35 junior high students based on analysis of 50+ university programs and labor trends.'
+    ],
+    tools:'Program Management, Curriculum Development, Data Collection & Analysis, Stakeholder Communication'
+  },
+  {
+    id:'e4', title:'Event Coordinator – Capstone Expo',
+    org:'Department of Electrical Engineering and Informatics, State University of Malang',
+    start:'Apr 2024', end:'May 2024',
+    bullets:[
+      'Led development of event timeline and rundown with data-driven planning, identifying critical paths and resource allocation for 500+ participants.',
+      'Coordinated 15+ team members with structured task assignments and monitored progress using project tracking tools.',
+      'Identified and analyzed potential risks through historical data from previous events; created contingency plans that reduced incident rate by 90%.'
+    ],
+    tools:'Project Management, Data Analysis, Microsoft Excel, Google Sheets, Problem-Solving'
+  },
+  {
+    id:'e5', title:'Event Committee – National HACKATHON Competition',
+    org:'National Competition',
+    start:'Jun 2024', end:'Jul 2024',
+    bullets:[
+      'Developed detailed event rundown with time allocation based on optimal duration analysis for each session.',
+      'Coordinated entire committee on event day with real-time monitoring and problem-solving to maintain smooth event execution.'
+    ],
+    tools:'Event Management, Time Management, Coordination, Problem-Solving'
+  },
+  {
+    id:'e6', title:'Secretariat Committee – Tech and Trade Expo',
+    org:'Department of Electrical Engineering and Informatics, State University of Malang',
+    start:'Sep 2024', end:'Nov 2024',
+    bullets:[
+      'Assisted program secretary in creating invitations, attendance lists, equipment loan letters, and processing certificates.',
+      'Managed document organization and data entry for event administration to ensure smooth operations.'
+    ],
+    tools:'Microsoft Word, Microsoft Excel, Document Management, Administrative Support'
+  },
+  {
+    id:'e7', title:'Entrepreneurship Staff',
+    org:'Student Association of Electrical Engineering and Informatics, State University of Malang',
+    start:'Jan 2023', end:'Dec 2023',
+    bullets:[
+      'Managed merchandise sales for 200+ customers; generated $8,000 revenue with 99.5% order accuracy using Google Sheets tracking.',
+      'Analyzed 250+ transactions: identified top 20% products driving 68% of revenue; recommended inventory optimization strategies.',
+      'Built pricing strategy and sales dashboard; increased repeat purchase rate from 15% to 28% and improved profit margin by 12%.'
+    ],
+    tools:'Google Sheets, Data Analysis, Sales Analytics, Financial Reporting'
+  }
+];
+
+const DEFAULT_EDU = [
+  {
+    id:'d1', degree:'Bachelor in Informatics Engineering',
+    inst:'State University of Malang',
+    start:'Aug 2022', end:'Oct 2026 (Expected)',
+    loc:'Malang, East Java, Indonesia',
+    gpa:'3.64 / 4.00',
+    courses:'Data Structures & Algorithms, Database Systems, Statistical Analysis, Machine Learning, Data Mining, Web Programming, Software Engineering'
+  }
+];
+
+const EXP_KEY = 'dita-experience';
+const EDU_KEY = 'dita-education';
+
+function loadExp() {
+  const raw = Store.get(EXP_KEY, null);
+  return raw === null ? DEFAULT_EXP : raw;
+}
+function loadEdu() {
+  const raw = Store.get(EDU_KEY, null);
+  return raw === null ? DEFAULT_EDU : raw;
+}
+
+/* ── RENDER ─────────────────────────────────────────────────── */
+function renderExp() {
+  const list = document.getElementById('exp-list');
+  const data = loadExp();
+  if (!data.length) {
+    list.innerHTML = `<div class="empty"><p>No experience added yet. Click "+ Add Experience" to get started.</p></div>`;
+    return;
+  }
+  list.innerHTML = data.map(e => `
+    <div class="tl-item fu" id="exp-${e.id}">
+      <div class="tl-dot"></div>
+      <p class="tl-date">${e.start}${e.end ? ' – ' + e.end : ''}</p>
+      <h3 class="tl-title">${e.title}</h3>
+      <p class="tl-org">${e.org}</p>
+      <div class="tl-desc">
+        <ul>${e.bullets.map(b => `<li>${b}</li>`).join('')}</ul>
+      </div>
+      ${e.tools ? `<p class="tl-tools"><strong>Tools:</strong> ${e.tools}</p>` : ''}
+      <div class="item-actions admin-only" data-saved-display="flex">
+        <button onclick="editExp('${e.id}')">✏ Edit</button>
+        <button class="del-btn" onclick="deleteExp('${e.id}')">✕ Delete</button>
+      </div>
+    </div>
+  `).join('');
+  initFadeUp();
+  applyAdminUI();
+}
+
+function renderEdu() {
+  const list = document.getElementById('edu-list');
+  const data = loadEdu();
+  if (!data.length) {
+    list.innerHTML = `<div class="empty"><p>No education added yet. Click "+ Add Education" to get started.</p></div>`;
+    return;
+  }
+  list.innerHTML = data.map(e => `
+    <div class="tl-item fu" id="edu-${e.id}">
+      <div class="tl-dot"></div>
+      <p class="tl-date">${e.start}${e.end ? ' – ' + e.end : ''}</p>
+      <h3 class="tl-title">${e.degree}</h3>
+      <p class="tl-org">${e.inst}${e.loc ? ' · ' + e.loc : ''}</p>
+      ${e.gpa ? `<p class="tl-tools"><strong>GPA:</strong> ${e.gpa}</p>` : ''}
+      ${e.courses ? `<div class="tl-desc" style="margin-top:8px"><strong style="font-size:.78rem;color:var(--muted)">Relevant Coursework:</strong><br>${e.courses}</div>` : ''}
+      <div class="item-actions admin-only" data-saved-display="flex">
+        <button onclick="editEdu('${e.id}')">✏ Edit</button>
+        <button class="del-btn" onclick="deleteEdu('${e.id}')">✕ Delete</button>
+      </div>
+    </div>
+  `).join('');
+  initFadeUp();
+  applyAdminUI();
+}
+
+/* ── SAVE / EDIT / DELETE — Experience ─────────────────────── */
+function saveExp() {
+  const title   = document.getElementById('exp-title').value.trim();
+  const org     = document.getElementById('exp-org').value.trim();
+  const start   = document.getElementById('exp-start').value.trim();
+  const end     = document.getElementById('exp-end').value.trim();
+  const bullets = document.getElementById('exp-bullets').value.trim().split('\n').filter(Boolean);
+  const tools   = document.getElementById('exp-tools').value.trim();
+  const editId  = document.getElementById('exp-edit-id').value;
+
+  if (!title || !org) { showToast('⚠ Title and Organisation are required.'); return; }
+
+  let data = loadExp();
+  let msg = '';
+  if (editId) {
+    // UPDATE: Sync to Supabase if available
+    if (supabaseClient) {
+      updateSupabaseExp(editId, {
+        position: title,
+        company: org,
+        duration: start + ' - ' + end,
+        description: bullets.join(' | ')
+      }).catch(e => console.error('Supabase update error:', e));
+    }
+    data = data.map(e => e.id === editId ? { ...e, title, org, start, end, bullets, tools } : e);
+    msg = '✓ Experience updated!';
+  } else {
+    const newId = genId();
+    // ADD: Sync to Supabase if available
+    if (supabaseClient) {
+      addSupabaseExp({
+        position: title,
+        company: org,
+        duration: start + ' - ' + end,
+        description: bullets.join(' | ')
+      }).catch(e => console.error('Supabase add error:', e));
+    }
+    data.unshift({ id: newId, title, org, start, end, bullets, tools });
+    msg = '✓ Experience added!';
+  }
+  Store.set(EXP_KEY, data);
+  closeModal('modal-exp');
+  clearExpForm();
+  renderExp();
+  showToast(msg);
+}
+
+function editExp(id) {
+  const e = loadExp().find(x => x.id === id);
+  if (!e) return;
+  document.getElementById('exp-edit-id').value  = id;
+  document.getElementById('exp-title').value    = e.title;
+  document.getElementById('exp-org').value      = e.org;
+  document.getElementById('exp-start').value    = e.start;
+  document.getElementById('exp-end').value      = e.end;
+  document.getElementById('exp-bullets').value  = e.bullets.join('\n');
+  document.getElementById('exp-tools').value    = e.tools;
+  document.getElementById('modal-exp-title').textContent = 'Edit Experience';
+  openModal('modal-exp');
+}
+
+function deleteExp(id) {
+  if (!confirm('Delete this experience entry?')) return;
+  // DELETE: Sync to Supabase if available
+  if (supabaseClient) {
+    deleteSupabaseExp(id).catch(e => console.error('Supabase delete error:', e));
+  }
+  Store.set(EXP_KEY, loadExp().filter(e => e.id !== id));
+  showToast('Deleted.');
+  renderExp();
+}
+
+function clearExpForm() {
+  ['exp-edit-id','exp-title','exp-org','exp-start','exp-end','exp-bullets','exp-tools']
+    .forEach(id => document.getElementById(id).value = '');
+  document.getElementById('modal-exp-title').textContent = 'Add Experience';
+}
+
+/* ── SAVE / EDIT / DELETE — Education ──────────────────────── */
+function saveEdu() {
+  const degree  = document.getElementById('edu-degree').value.trim();
+  const inst    = document.getElementById('edu-inst').value.trim();
+  const start   = document.getElementById('edu-start').value.trim();
+  const end     = document.getElementById('edu-end').value.trim();
+  const gpa     = document.getElementById('edu-gpa').value.trim();
+  const loc     = document.getElementById('edu-loc').value.trim();
+  const courses = document.getElementById('edu-courses').value.trim();
+  const editId  = document.getElementById('edu-edit-id').value;
+
+  if (!degree || !inst) { showToast('⚠ Degree and Institution are required.'); return; }
+
+  let data = loadEdu();
+  let msg = '';
+  if (editId) {
+    data = data.map(e => e.id === editId ? { ...e, degree, inst, start, end, gpa, loc, courses } : e);
+    msg = '✓ Education updated!';
+  } else {
+    data.unshift({ id: genId(), degree, inst, start, end, gpa, loc, courses });
+    msg = '✓ Education added!';
+  }
+  Store.set(EDU_KEY, data);
+  closeModal('modal-edu');
+  clearEduForm();
+  renderEdu();
+  showToast(msg);
+}
+
+function editEdu(id) {
+  const e = loadEdu().find(x => x.id === id);
+  if (!e) return;
+  document.getElementById('edu-edit-id').value  = id;
+  document.getElementById('edu-degree').value   = e.degree;
+  document.getElementById('edu-inst').value     = e.inst;
+  document.getElementById('edu-start').value    = e.start;
+  document.getElementById('edu-end').value      = e.end;
+  document.getElementById('edu-gpa').value      = e.gpa;
+  document.getElementById('edu-loc').value      = e.loc;
+  document.getElementById('edu-courses').value  = e.courses;
+  document.getElementById('modal-edu-title').textContent = 'Edit Education';
+  openModal('modal-edu');
+}
+
+function deleteEdu(id) {
+  if (!confirm('Delete this education entry?')) return;
+  // DELETE: Sync to Supabase if available
+  if (supabaseClient) {
+    deleteSupabaseExp(id).catch(e => console.error('Supabase delete error:', e));
+  }
+  Store.set(EDU_KEY, loadEdu().filter(e => e.id !== id));
+  showToast('Deleted.');
+  renderEdu();
+}
+
+function clearEduForm() {
+  ['edu-edit-id','edu-degree','edu-inst','edu-start','edu-end','edu-gpa','edu-loc','edu-courses']
+    .forEach(id => document.getElementById(id).value = '');
+  document.getElementById('modal-edu-title').textContent = 'Add Education';
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  initNav('experience');
+  renderExp();
+  renderEdu();
+});
+</script>
+</body>
+</html>

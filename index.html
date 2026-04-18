@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <meta name="description" content="Dita Anggraini — Data Analyst & Full-Stack Developer. Certified in Power BI & Tableau. Transforming data into actionable insights."/>
+  <meta name="keywords" content="data analyst, developer, portfolio, power bi, tableau, python, dashboard, data visualization"/>
+  <meta name="author" content="Dita Anggraini Puspitasari"/>
+  <meta name="robots" content="index, follow"/>
+  <meta name="language" content="English"/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:title" content="Dita Anggraini — Data Analyst & Developer"/>
+  <meta property="og:description" content="Portfolio showcasing data analysis projects, certifications, and professional experience."/>
+  <meta property="og:image" content="./assets/profile.png"/>
+  <meta property="og:url" content="https://ditaanggraini.com"/>
+  <meta property="og:site_name" content="Dita Anggraini Portfolio"/>
+  <meta name="twitter:card" content="summary_large_image"/>
+  <meta name="twitter:title" content="Dita Anggraini — Portfolio"/>
+  <meta name="twitter:description" content="Data Analyst & Full-Stack Developer"/>
+  <meta name="theme-color" content="#0d0d0d"/>
+  <link rel="canonical" href="https://ditaanggraini.com"/>
+  <title>Dita Anggraini | Data Analyst & Developer Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" font-display="swap"/>
+  <link rel="stylesheet" href="src/css/style.css"/>
+  <style>
+    /* Skill category label */
+    .skill-cat-label {
+      font-size:.72rem;color:var(--faint);font-weight:500;
+      text-transform:uppercase;letter-spacing:.1em;
+      margin-bottom:8px;margin-top:16px;display:block;
+    }
+    /* Language bar */
+    .lang-card { background:var(--card);border:1px solid var(--bdr);border-radius:var(--r);padding:20px; }
+    .lang-bar-wrap { height:4px;background:var(--bg2);border-radius:2px;margin:10px 0 6px; }
+    .lang-bar-fill { height:100%;background:var(--txt);border-radius:2px;transition:width .4s var(--ease); }
+    /* Stat card hover */
+    .stat-card:hover { border-color:var(--bdr2);box-shadow:var(--shadow-md); }
+    /* Edit overlay on photo */
+    .photo-edit-overlay {
+      position:absolute;inset:0;background:rgba(0,0,0,.45);
+      display:flex;align-items:center;justify-content:center;
+      opacity:0;transition:opacity .25s;cursor:pointer;
+      border-radius:var(--r-lg);z-index:2;
+      font-size:.85rem;color:#fff;font-weight:500;gap:6px;
+    }
+    .hero-photo-frame:hover .photo-edit-overlay { opacity:1; }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">Dita.</a>
+    <ul class="nav-pages">
+      <li><a href="index.html" data-page="home">Home</a></li>
+      <li><a href="experience.html" data-page="experience">Experience</a></li>
+      <li><a href="projects.html" data-page="projects">Projects</a></li>
+      <li><a href="certifications.html" data-page="certifications">Certifications</a></li>
+      <li><a href="contact.html" data-page="contact">Contact</a></li>
+    </ul>
+    <button id="theme-tog" aria-label="Toggle dark mode">☀ / ☾</button>
+    <button id="ham" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<div class="mob-drawer" id="mob-drawer">
+  <ul>
+    <li><a href="index.html" data-page="home">Home</a></li>
+    <li><a href="experience.html" data-page="experience">Experience</a></li>
+    <li><a href="projects.html" data-page="projects">Projects</a></li>
+    <li><a href="certifications.html" data-page="certifications">Certifications</a></li>
+    <li><a href="contact.html" data-page="contact">Contact</a></li>
+  </ul>
+</div>
+
+<div class="page-wrap">
+
+<!-- ══ HERO ═══════════════════════════════════════════════════ -->
+<section id="hero">
+  <div class="wrap">
+    <div class="hero-inner">
+      <div class="hero-text">
+        <p class="hero-eyebrow">Hello, I'm</p>
+        <h1 class="hero-name" id="hero-name-display">Dita<br><em>Anggraini</em></h1>
+        <p class="hero-role" id="hero-role-display">Data Analyst &amp; Full-Stack Developer</p>
+        <p class="hero-tagline" id="hero-tagline-display">
+          Informatics Engineering student at State University of Malang. Certified in Power BI &amp; Tableau
+          transforming raw data into actionable insights that drive real business impac
+        </p>
+        <div class="hero-cta">
+          <a href="projects.html" class="btn btn-p">View My Work</a>
+          <a href="contact.html" class="btn btn-o">Get In Touch</a>
+        </div>
+        <div class="hero-contacts">
+          <a href="mailto:ditaanggraini173@gmail.com" id="contact-email-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 7 10-7"/></svg>
+            <span id="contact-email-text">ditaanggraini173@gmail.com</span>
+          </a>
+          <a href="https://linkedin.com/in/dita-anggraini-5b5807343" target="_blank" rel="noopener" id="contact-linkedin-link">
+            <svg viewBox="0 0 24 24" fill="currentColor" width="13" height="13"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+            LinkedIn
+          </a>
+          <a href="https://github.com/dita25" target="_blank" rel="noopener" id="contact-github-link">
+            <svg viewBox="0 0 24 24" fill="currentColor" width="13" height="13"><path d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2z"/></svg>
+            <span id="contact-github-text">github.com/dita25</span>
+          </a>
+          <a href="tel:+6281007548121" id="contact-phone-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="13" height="13"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.5 2 2 0 0 1 3.6 1.32h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.85a16 16 0 0 0 6.29 6.29l.95-.95a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            <span id="contact-phone-text">+62 810-0754-8121</span>
+          </a>
+        </div>
+        <!-- Admin: edit hero info -->
+        <div class="admin-only" data-saved-display="flex" style="display:flex;gap:8px;margin-top:16px">
+          <button class="btn btn-o btn-sm" onclick="openModal('modal-hero')">✏ Edit Info</button>
+        </div>
+      </div>
+
+      <!-- Profile photo -->
+      <div class="hero-photo-wrap">
+        <div class="hero-photo-frame">
+          <img id="hero-photo-img" src="./assets/profile.png" alt="Dita Anggraini" class="hero-photo"
+               onerror="this.src='';this.style.display='none'"/>
+          <!-- Admin: click to change photo -->
+          <div class="photo-edit-overlay admin-only" data-saved-display="flex"
+               onclick="document.getElementById('photo-file-input').click()" title="Ganti foto profil">
+            🖼 Ganti Foto
+          </div>
+          <input type="file" id="photo-file-input" accept="image/*" style="display:none"
+                 onchange="handlePhotoUpload(this)"/>
+        </div>
+        <div class="hero-photo-accent"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ ABOUT ═══════════════════════════════════════════════════ -->
+<section class="section section-alt">
+  <div class="wrap">
+    <div class="about-grid">
+
+      <!-- Bio -->
+      <div class="fu">
+        <span class="tag">About Me</span>
+        <h2 class="sh">Turning data into<br><em>decisions</em>.</h2>
+        <p id="bio-p1" style="color:var(--muted);font-size:.9rem;margin-bottom:16px">
+          I'm an Informatics Engineering student at State University of Malang (GPA 3.64/4.00) with hands-on experience transforming raw data into actionable business insights.
+        </p>
+        <p id="bio-p2" style="color:var(--muted);font-size:.9rem;margin-bottom:16px">
+          Certified in <strong>Power BI</strong> and <strong>Tableau</strong> with a proven track record of improving operational efficiency by 15% through automated financial reporting and data-driven budget optimization.
+        </p>
+        <p id="bio-p3" style="color:var(--muted);font-size:.9rem;margin-bottom:20px">
+          I combine technical expertise with strong communication skills to bridge the gap between data and decision-makers — serving 50+ stakeholders with interactive dashboards.
+        </p>
+
+        <!-- CV download -->
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+          <a id="cv-download-link" href="./assets/cv-dita.pdf" class="btn btn-o" download>⬇ Download CV</a>
+          <button class="btn btn-o btn-sm admin-only" data-saved-display="inline-flex"
+                  onclick="document.getElementById('cv-file-input').click()">📎 Ganti CV</button>
+          <input type="file" id="cv-file-input" accept=".pdf" style="display:none"
+                 onchange="handleCVUpload(this)"/>
+        </div>
+
+        <!-- Admin: edit bio -->
+        <div class="admin-only" data-saved-display="flex" style="display:flex;gap:8px;margin-top:14px">
+          <button class="btn btn-o btn-sm" onclick="openModal('modal-bio')">✏ Edit Bio</button>
+        </div>
+      </div>
+
+      <!-- Skills -->
+      <div class="fu" style="transition-delay:.12s">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+          <span class="tag" style="margin-bottom:0">Core Competencies</span>
+          <button class="btn btn-o btn-sm admin-only" data-saved-display="inline-flex"
+                  onclick="openModal('modal-skills')">✏ Edit Skills</button>
+        </div>
+        <div id="skills-render"><!-- Rendered by JS --></div>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;margin-top:56px">
+      <div class="card fu stat-card" style="text-align:center;transition-delay:.0s">
+        <p id="stat1-num" style="font-family:var(--display);font-size:2.2rem;font-weight:700;line-height:1">15,000+</p>
+        <p id="stat1-lbl" style="font-size:.78rem;color:var(--muted);margin-top:4px">Records Analyzed</p>
+      </div>
+      <div class="card fu stat-card" style="text-align:center;transition-delay:.08s">
+        <p id="stat2-num" style="font-family:var(--display);font-size:2.2rem;font-weight:700;line-height:1">4</p>
+        <p id="stat2-lbl" style="font-size:.78rem;color:var(--muted);margin-top:4px">Dashboards Built</p>
+      </div>
+      <div class="card fu stat-card" style="text-align:center;transition-delay:.16s">
+        <p id="stat3-num" style="font-family:var(--display);font-size:2.2rem;font-weight:700;line-height:1">94%</p>
+        <p id="stat3-lbl" style="font-size:.78rem;color:var(--muted);margin-top:4px">Report Time Saved</p>
+      </div>
+      <div class="card fu stat-card" style="text-align:center;transition-delay:.24s">
+        <p id="stat4-num" style="font-family:var(--display);font-size:2.2rem;font-weight:700;line-height:1">87%</p>
+        <p id="stat4-lbl" style="font-size:.78rem;color:var(--muted);margin-top:4px">ML Model Accuracy</p>
+      </div>
+    </div>
+    <div class="admin-only" data-saved-display="flex" style="display:flex;justify-content:flex-end;margin-top:12px">
+      <button class="btn btn-o btn-sm" onclick="openModal('modal-stats')">✏ Edit Stats</button>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══ QUICK LINKS ══════════════════════════════════════════════ -->
+<section class="section section-alt">
+  <div class="wrap">
+    <span class="tag center">Explore More</span>
+    <h2 class="sh center">What I've been <em>up to</em></h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:40px">
+      <a href="experience.html" class="card fu" style="display:block;transition-delay:.0s">
+        <div style="font-size:1.5rem;margin-bottom:12px">💼</div>
+        <h3 style="font-family:var(--display);font-size:1.1rem;font-weight:700;margin-bottom:8px">Experience</h3>
+        <p style="font-size:.83rem;color:var(--muted)">Data Analyst Intern, General Treasurer, Program Coordinator & more.</p>
+        <p style="margin-top:14px;font-size:.78rem;font-weight:500">View Experience →</p>
+      </a>
+      <a href="projects.html" class="card fu" style="display:block;transition-delay:.08s">
+        <div style="font-size:1.5rem;margin-bottom:12px">🚀</div>
+        <h3 style="font-family:var(--display);font-size:1.1rem;font-weight:700;margin-bottom:8px">Projects</h3>
+        <p style="font-size:.83rem;color:var(--muted)">WebXR platforms, financial automation, dashboards & more.</p>
+        <p style="margin-top:14px;font-size:.78rem;font-weight:500">View Projects →</p>
+      </a>
+      <a href="certifications.html" class="card fu" style="display:block;transition-delay:.16s">
+        <div style="font-size:1.5rem;margin-bottom:12px">🏅</div>
+        <h3 style="font-family:var(--display);font-size:1.1rem;font-weight:700;margin-bottom:8px">Certifications</h3>
+        <p style="font-size:.83rem;color:var(--muted)">Power BI, Tableau, and Data Analyst Professional credentials.</p>
+        <p style="margin-top:14px;font-size:.78rem;font-weight:500">View Certifications →</p>
+      </a>
+      <a href="contact.html" class="card fu" style="display:block;transition-delay:.24s">
+        <div style="font-size:1.5rem;margin-bottom:12px">✉</div>
+        <h3 style="font-family:var(--display);font-size:1.1rem;font-weight:700;margin-bottom:8px">Contact</h3>
+        <p style="font-size:.83rem;color:var(--muted)">Let's collaborate via email, LinkedIn, or GitHub.</p>
+        <p style="margin-top:14px;font-size:.78rem;font-weight:500">Get In Touch →</p>
+      </a>
+    </div>
+  </div>
+</section>
+
+</div><!-- /page-wrap -->
+<footer>
+  <div class="footer-inner">
+    <p>© 2025 Dita Anggraini Puspitasari. All rights reserved.</p>
+    <p>Informatics Engineering · State University of Malang</p>
+  </div>
+</footer>
+
+<!-- ══ MODAL: EDIT HERO INFO ════════════════════════════════════ -->
+<div class="modal-backdrop admin-only" id="modal-hero">
+  <div class="modal" role="dialog" aria-labelledby="mh-title">
+    <div class="modal-header">
+      <h3 class="modal-title" id="mh-title">Edit Info & Kontak</h3>
+      <button class="modal-close" onclick="closeModal('modal-hero')">✕</button>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Nama Depan</label><input type="text" id="h-fname" placeholder="Dita"/></div>
+      <div class="form-group"><label>Nama Belakang (italic)</label><input type="text" id="h-lname" placeholder="Anggraini"/></div>
+    </div>
+    <div class="form-group"><label>Role / Jabatan</label><input type="text" id="h-role" placeholder="Data Analyst & Full-Stack Developer"/></div>
+    <div class="form-group"><label>Tagline</label><textarea id="h-tagline" rows="2"></textarea></div>
+    <div class="form-group"><label>Email</label><input type="email" id="h-email"/></div>
+    <div class="form-group"><label>LinkedIn URL</label><input type="url" id="h-linkedin"/></div>
+    <div class="form-group"><label>GitHub URL</label><input type="url" id="h-github"/></div>
+    <div class="form-group"><label>No. Telp</label><input type="text" id="h-phone"/></div>
+    <div class="modal-footer">
+      <button class="btn btn-o btn-sm" onclick="closeModal('modal-hero')">Batal</button>
+      <button class="btn btn-p btn-sm" onclick="saveHero()">Simpan</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODAL: EDIT BIO ══════════════════════════════════════════ -->
+<div class="modal-backdrop admin-only" id="modal-bio">
+  <div class="modal" role="dialog">
+    <div class="modal-header">
+      <h3 class="modal-title">Edit Bio</h3>
+      <button class="modal-close" onclick="closeModal('modal-bio')">✕</button>
+    </div>
+    <div class="form-group"><label>Paragraf 1</label><textarea id="bio-edit-p1" rows="3"></textarea></div>
+    <div class="form-group"><label>Paragraf 2</label><textarea id="bio-edit-p2" rows="3"></textarea></div>
+    <div class="form-group"><label>Paragraf 3</label><textarea id="bio-edit-p3" rows="3"></textarea></div>
+    <div class="modal-footer">
+      <button class="btn btn-o btn-sm" onclick="closeModal('modal-bio')">Batal</button>
+      <button class="btn btn-p btn-sm" onclick="saveBio()">Simpan</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODAL: EDIT SKILLS ════════════════════════════════════════ -->
+<div class="modal-backdrop admin-only" id="modal-skills">
+  <div class="modal" style="max-width:600px" role="dialog">
+    <div class="modal-header">
+      <h3 class="modal-title">Edit Skills</h3>
+      <button class="modal-close" onclick="closeModal('modal-skills')">✕</button>
+    </div>
+    <p style="font-size:.82rem;color:var(--muted);margin-bottom:20px">
+      Tiap baris = satu kategori. Format: <code style="background:var(--bg2);padding:2px 6px;border-radius:4px">Nama Kategori | skill1, skill2, skill3</code>
+    </p>
+    <div class="form-group">
+      <label>Skills (satu kategori per baris)</label>
+      <textarea id="skills-edit-raw" rows="8"
+        placeholder="Data Analysis & Visualization | Power BI, Tableau, Python, SQL&#10;Web Development | Laravel, React.js, JavaScript, MySQL"></textarea>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-o btn-sm" onclick="closeModal('modal-skills')">Batal</button>
+      <button class="btn btn-p btn-sm" onclick="saveSkills()">Simpan</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODAL: EDIT STATS ═════════════════════════════════════════ -->
+<div class="modal-backdrop admin-only" id="modal-stats">
+  <div class="modal" role="dialog">
+    <div class="modal-header">
+      <h3 class="modal-title">Edit Stats</h3>
+      <button class="modal-close" onclick="closeModal('modal-stats')">✕</button>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Stat 1 — Angka</label><input type="text" id="s1n" placeholder="15,000+"/></div>
+      <div class="form-group"><label>Stat 1 — Label</label><input type="text" id="s1l" placeholder="Records Analyzed"/></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Stat 2 — Angka</label><input type="text" id="s2n" placeholder="4"/></div>
+      <div class="form-group"><label>Stat 2 — Label</label><input type="text" id="s2l" placeholder="Dashboards Built"/></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Stat 3 — Angka</label><input type="text" id="s3n" placeholder="94%"/></div>
+      <div class="form-group"><label>Stat 3 — Label</label><input type="text" id="s3l" placeholder="Report Time Saved"/></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Stat 4 — Angka</label><input type="text" id="s4n" placeholder="87%"/></div>
+      <div class="form-group"><label>Stat 4 — Label</label><input type="text" id="s4l" placeholder="ML Model Accuracy"/></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-o btn-sm" onclick="closeModal('modal-stats')">Batal</button>
+      <button class="btn btn-p btn-sm" onclick="saveStats()">Simpan</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+<div id="admin-bar" onclick="promptAdminLogin()" title="Klik untuk keluar admin mode">
+  <div class="admin-dot"></div>
+  Admin Mode Aktif — Klik untuk keluar
+</div>
+
+<script src="src/js/constants.js"></script>
+<script src="src/js/shared.js"></script>
+<script>
+/* ══════════════════════════════════════════════════════════
+   STORAGE KEYS
+════════════════════════════════════════════════════════════ */
+const K_HERO    = 'dita-hero';
+const K_BIO     = 'dita-bio';
+const K_SKILLS  = 'dita-skills';
+const K_STATS   = 'dita-stats';
+const K_PHOTO   = 'dita-photo';
+const K_CV      = 'dita-cv';
+
+/* ══ DEFAULT DATA ══════════════════════════════════════════ */
+const DEF_HERO = {
+  fname:'Dita', lname:'Anggraini',
+  role:'Data Analyst & Full-Stack Developer',
+  tagline:'Informatics Engineering student at State University of Malang. Certified in Power BI & Tableau — transforming raw data into actionable insights that drive real business impact.',
+  email:'ditaanggraini173@gmail.com',
+  linkedin:'https://linkedin.com/in/dita-anggraini-5b5807343',
+  github:'https://github.com/dita25',
+  phone:'+62 810-0754-8121'
+};
+const DEF_SKILLS = [
+  { cat:'Data Analysis & Visualization', chips:['Power BI','Tableau','Python (Pandas, NumPy)','SQL','Excel Advanced','Looker Studio','Orange Data Mining'] },
+  { cat:'Web Development',               chips:['Laravel','PHP','HTML5/CSS3','JavaScript','React.js','Next.js','MySQL','MongoDB','Figma'] },
+  { cat:'Soft Skills',                   chips:['Data Storytelling','Stakeholder Communication','Project Management','Public Speaking'] }
+];
+const DEF_STATS = [
+  { num:'15,000+', lbl:'Records Analyzed' },
+  { num:'4',       lbl:'Dashboards Built' },
+  { num:'94%',     lbl:'Report Time Saved' },
+  { num:'87%',     lbl:'ML Model Accuracy' }
+];
+
+/* ══ LOAD HELPERS ══════════════════════════════════════════ */
+function loadHero()   { return Store.get(K_HERO,   DEF_HERO);   }
+function loadSkills() { return Store.get(K_SKILLS, DEF_SKILLS); }
+function loadStats()  { return Store.get(K_STATS,  DEF_STATS);  }
+
+/* ══ RENDER: HERO ══════════════════════════════════════════ */
+function renderHero() {
+  const h = loadHero();
+  document.getElementById('hero-name-display').innerHTML = `${h.fname}<br><em>${h.lname}</em>`;
+  document.getElementById('hero-role-display').textContent  = h.role;
+  document.getElementById('hero-tagline-display').textContent = h.tagline;
+
+  const eLink = document.getElementById('contact-email-link');
+  eLink.href = 'mailto:' + h.email;
+  document.getElementById('contact-email-text').textContent = h.email;
+
+  const lLink = document.getElementById('contact-linkedin-link');
+  lLink.href = h.linkedin;
+
+  const gLink = document.getElementById('contact-github-link');
+  gLink.href = h.github;
+  document.getElementById('contact-github-text').textContent = h.github.replace('https://','');
+
+  const pLink = document.getElementById('contact-phone-link');
+  pLink.href = 'tel:' + h.phone.replace(/\s/g,'');
+  document.getElementById('contact-phone-text').textContent = h.phone;
+
+  /* Restore saved photo */
+  const savedPhoto = localStorage.getItem(K_PHOTO);
+  if (savedPhoto) {
+    const img = document.getElementById('hero-photo-img');
+    img.src = savedPhoto;
+    img.style.display = 'block';
+  }
+}
+
+/* ══ RENDER: SKILLS ════════════════════════════════════════ */
+function renderSkills() {
+  const skills = loadSkills();
+  document.getElementById('skills-render').innerHTML = skills.map(cat => `
+    <span class="skill-cat-label">${cat.cat}</span>
+    <div class="chips">
+      ${cat.chips.map(c => `<span class="chip">${c}</span>`).join('')}
+    </div>
+  `).join('');
+}
+
+/* ══ RENDER: STATS ═════════════════════════════════════════ */
+function renderStats() {
+  const stats = loadStats();
+  ['1','2','3','4'].forEach((n,i) => {
+    const s = stats[i];
+    if (!s) return;
+    document.getElementById('stat'+n+'-num').textContent = s.num;
+    document.getElementById('stat'+n+'-lbl').textContent = s.lbl;
+  });
+}
+
+/* ══ RENDER: BIO ════════════════════════════════════════════ */
+function renderBio() {
+  const bio = Store.get(K_BIO, null);
+  if (!bio) return;
+  if (bio.p1) document.getElementById('bio-p1').textContent = bio.p1;
+  if (bio.p2) document.getElementById('bio-p2').innerHTML  = bio.p2;
+  if (bio.p3) document.getElementById('bio-p3').textContent = bio.p3;
+}
+
+/* ══ SAVE: HERO ════════════════════════════════════════════ */
+function saveHero() {
+  const h = {
+    fname:    document.getElementById('h-fname').value.trim()    || DEF_HERO.fname,
+    lname:    document.getElementById('h-lname').value.trim()    || DEF_HERO.lname,
+    role:     document.getElementById('h-role').value.trim()     || DEF_HERO.role,
+    tagline:  document.getElementById('h-tagline').value.trim()  || DEF_HERO.tagline,
+    email:    document.getElementById('h-email').value.trim()    || DEF_HERO.email,
+    linkedin: document.getElementById('h-linkedin').value.trim() || DEF_HERO.linkedin,
+    github:   document.getElementById('h-github').value.trim()   || DEF_HERO.github,
+    phone:    document.getElementById('h-phone').value.trim()    || DEF_HERO.phone,
+  };
+  Store.set(K_HERO, h);
+  closeModal('modal-hero');
+  renderHero();
+  showToast('✓ Info diperbarui!');
+}
+function openHeroModal() {
+  const h = loadHero();
+  document.getElementById('h-fname').value    = h.fname;
+  document.getElementById('h-lname').value    = h.lname;
+  document.getElementById('h-role').value     = h.role;
+  document.getElementById('h-tagline').value  = h.tagline;
+  document.getElementById('h-email').value    = h.email;
+  document.getElementById('h-linkedin').value = h.linkedin;
+  document.getElementById('h-github').value   = h.github;
+  document.getElementById('h-phone').value    = h.phone;
+  openModal('modal-hero');
+}
+
+/* ══ SAVE: BIO ══════════════════════════════════════════════ */
+function saveBio() {
+  Store.set(K_BIO, {
+    p1: document.getElementById('bio-edit-p1').value.trim(),
+    p2: document.getElementById('bio-edit-p2').value.trim(),
+    p3: document.getElementById('bio-edit-p3').value.trim()
+  });
+  closeModal('modal-bio');
+  renderBio();
+  showToast('✓ Bio diperbarui!');
+}
+function openBioModal() {
+  const bio = Store.get(K_BIO, {});
+  document.getElementById('bio-edit-p1').value = bio.p1 || document.getElementById('bio-p1').textContent;
+  document.getElementById('bio-edit-p2').value = bio.p2 || document.getElementById('bio-p2').textContent;
+  document.getElementById('bio-edit-p3').value = bio.p3 || document.getElementById('bio-p3').textContent;
+  openModal('modal-bio');
+}
+
+/* ══ SAVE: SKILLS ═══════════════════════════════════════════ */
+function openSkillsModal() {
+  const skills = loadSkills();
+  document.getElementById('skills-edit-raw').value =
+    skills.map(s => `${s.cat} | ${s.chips.join(', ')}`).join('\n');
+  openModal('modal-skills');
+}
+function saveSkills() {
+  const raw = document.getElementById('skills-edit-raw').value.trim();
+  const skills = raw.split('\n').filter(Boolean).map(line => {
+    const [cat, rest] = line.split('|').map(s=>s.trim());
+    return { cat, chips: (rest||'').split(',').map(s=>s.trim()).filter(Boolean) };
+  });
+  Store.set(K_SKILLS, skills);
+  closeModal('modal-skills');
+  renderSkills();
+  showToast('✓ Skills diperbarui!');
+}
+
+/* ══ SAVE: STATS ════════════════════════════════════════════ */
+function openStatsModal() {
+  const stats = loadStats();
+  ['1','2','3','4'].forEach((n,i) => {
+    document.getElementById('s'+n+'n').value = stats[i]?.num || '';
+    document.getElementById('s'+n+'l').value = stats[i]?.lbl || '';
+  });
+  openModal('modal-stats');
+}
+function saveStats() {
+  const stats = ['1','2','3','4'].map(n => ({
+    num: document.getElementById('s'+n+'n').value.trim(),
+    lbl: document.getElementById('s'+n+'l').value.trim()
+  }));
+  Store.set(K_STATS, stats);
+  closeModal('modal-stats');
+  renderStats();
+  showToast('✓ Stats diperbarui!');
+}
+
+/* ══ PHOTO UPLOAD ════════════════════════════════════════════ */
+function handlePhotoUpload(input) {
+  const file = input.files[0];
+  if (!file) return;
+  if (file.size > 3 * 1024 * 1024) { showToast('⚠ Foto terlalu besar. Maks 3MB.'); return; }
+  const reader = new FileReader();
+  reader.onload = e => {
+    localStorage.setItem(K_PHOTO, e.target.result);
+    const img = document.getElementById('hero-photo-img');
+    img.src = e.target.result;
+    img.style.display = 'block';
+    showToast('✓ Foto profil diperbarui!');
+  };
+  reader.readAsDataURL(file);
+}
+
+/* ══ CV UPLOAD ════════════════════════════════════════════════ */
+function handleCVUpload(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    localStorage.setItem(K_CV, e.target.result);
+    document.getElementById('cv-download-link').href = e.target.result;
+    showToast('✓ CV diperbarui!');
+  };
+  reader.readAsDataURL(file);
+}
+
+/* Fix onclick for modals that need pre-fill */
+document.addEventListener('DOMContentLoaded', () => {
+  /* Reroute modal opens that need pre-fill */
+  document.querySelector('[onclick="openModal(\'modal-hero\')"]')
+    ?.setAttribute('onclick', 'openHeroModal()');
+  document.querySelector('[onclick="openModal(\'modal-bio\')"]')
+    ?.setAttribute('onclick', 'openBioModal()');
+  document.querySelector('[onclick="openModal(\'modal-skills\')"]')
+    ?.setAttribute('onclick', 'openSkillsModal()');
+  document.querySelector('[onclick="openModal(\'modal-stats\')"]')
+    ?.setAttribute('onclick', 'openStatsModal()');
+
+  /* Restore CV link if saved */
+  const savedCV = localStorage.getItem(K_CV);
+  if (savedCV) document.getElementById('cv-download-link').href = savedCV;
+
+  initNav('home');
+  renderHero();
+  renderBio();
+  renderSkills();
+  renderStats();
+  initFadeUp();
+});
+</script>
+</body>
+</html>

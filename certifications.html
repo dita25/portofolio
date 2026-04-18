@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <meta name="description" content="Certifications & training in Data Analysis, Power BI, Tableau, and Full-Stack Development by Dita Anggraini."/>
+  <meta name="keywords" content="certifications, power bi, tableau, data analysis, training"/>
+  <meta property="og:title" content="Certifications — Dita Anggraini"/>
+  <meta property="og:description" content="Professional certifications in data analysis and visualization."/>
+  <meta property="og:url" content="https://ditaanggraini.com/certifications"/>
+  <title>Certifications — Dita Anggraini</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" font-display="swap"/>
+  <link rel="stylesheet" href="src/css/style.css"/>
+</head>
+<body>
+
+<nav id="navbar">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">Dita.</a>
+    <ul class="nav-pages">
+      <li><a href="index.html" data-page="home">Home</a></li>
+      <li><a href="experience.html" data-page="experience">Experience</a></li>
+      <li><a href="projects.html" data-page="projects">Projects</a></li>
+      <li><a href="certifications.html" data-page="certifications">Certifications</a></li>
+      <li><a href="contact.html" data-page="contact">Contact</a></li>
+    </ul>
+    <button id="theme-tog" aria-label="Toggle dark mode">☀ / ☾</button>
+    <button id="ham" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<div class="mob-drawer" id="mob-drawer">
+  <ul>
+    <li><a href="index.html" data-page="home">Home</a></li>
+    <li><a href="experience.html" data-page="experience">Experience</a></li>
+    <li><a href="projects.html" data-page="projects">Projects</a></li>
+    <li><a href="certifications.html" data-page="certifications">Certifications</a></li>
+    <li><a href="contact.html" data-page="contact">Contact</a></li>
+  </ul>
+</div>
+
+<div class="page-wrap">
+
+  <!-- PAGE HERO -->
+  <div class="page-hero">
+    <div class="wrap">
+      <span class="tag">Credentials</span>
+      <h1>Certifications &amp; <em>Training</em></h1>
+      <p>Professional certifications validating expertise in data analysis and visualization.</p>
+    </div>
+  </div>
+
+  <!-- CERTIFICATIONS -->
+  <section class="section">
+    <div class="wrap">
+      <div class="section-ctrl">
+        <h2 class="sh" style="margin-bottom:0">My Certifications</h2>
+        <button class="btn btn-p btn-sm admin-only" data-saved-display="inline-flex"
+                onclick="openAddCertModal()">+ Add Certification</button>
+      </div>
+      <div id="cert-list" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px">
+        <!-- Rendered by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- LANGUAGES — dynamic, editable -->
+  <section class="section section-alt">
+    <div class="wrap">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:28px">
+        <div>
+          <span class="tag">Languages</span>
+          <h2 class="sh" style="margin-bottom:0">Language <em>Proficiency</em></h2>
+        </div>
+        <button class="btn btn-o btn-sm admin-only" data-saved-display="inline-flex"
+                onclick="openLangModal()">✏ Edit Languages</button>
+      </div>
+      <div id="lang-render" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px">
+        <!-- Rendered by JS -->
+      </div>
+    </div>
+  </section>
+
+</div><!-- /page-wrap -->
+
+<footer>
+  <div class="footer-inner">
+    <p>© 2025 Dita Anggraini Puspitasari</p>
+    <p>State University of Malang</p>
+  </div>
+</footer>
+
+<!-- ── CERT DETAIL MODAL (semua orang bisa lihat) ───────────── -->
+<div class="modal-backdrop" id="modal-cert-detail">
+  <div class="modal" style="max-width:600px" role="dialog" aria-labelledby="cert-detail-title">
+    <div class="modal-header">
+      <h3 class="modal-title" id="cert-detail-title"></h3>
+      <button class="modal-close" onclick="closeModal('modal-cert-detail')">✕</button>
+    </div>
+    <div id="cert-detail-img-wrap" style="display:none;margin-bottom:20px">
+      <img id="cert-detail-img" src="" alt="Certificate"
+           style="width:100%;border-radius:12px;border:1px solid var(--bdr);object-fit:contain;max-height:360px"/>
+    </div>
+    <div id="cert-detail-no-img"
+         style="width:100%;aspect-ratio:4/3;background:var(--bg2);border-radius:12px;
+                display:flex;align-items:center;justify-content:center;margin-bottom:20px;font-size:3rem">🏅</div>
+    <p style="font-size:.7rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);margin-bottom:6px"
+       id="cert-detail-date"></p>
+    <p style="font-size:.95rem;color:var(--muted);margin-bottom:6px" id="cert-detail-org"></p>
+    <p style="font-size:.88rem;color:var(--muted);line-height:1.8;margin-bottom:20px" id="cert-detail-desc"></p>
+    <div id="cert-detail-cid-wrap"
+         style="display:none;background:var(--bg2);border-radius:var(--r);padding:12px 16px;margin-bottom:20px;font-size:.83rem;color:var(--muted)">
+      <strong style="color:var(--txt)">Credential ID:</strong> <span id="cert-detail-cid"></span>
+    </div>
+    <div id="cert-detail-link-wrap" style="display:none">
+      <a id="cert-detail-link" href="#" target="_blank" rel="noopener"
+         style="display:inline-flex;align-items:center;gap:8px;padding:11px 22px;border-radius:999px;
+                background:var(--txt);color:var(--bg);font-size:.85rem;font-weight:500;text-decoration:none">
+        🔗 View Certificate
+      </a>
+    </div>
+    <div class="admin-only" data-saved-display="flex"
+         style="margin-top:20px;padding-top:20px;border-top:1px solid var(--bdr);display:flex;gap:10px">
+      <button class="btn btn-o btn-sm" id="cert-detail-edit-btn">✏ Edit</button>
+      <button class="btn btn-sm" style="border:1px solid #fca5a5;color:#b91c1c;background:transparent"
+              id="cert-detail-delete-btn">✕ Delete</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── ADD / EDIT CERTIFICATION MODAL (admin only) ───────────── -->
+<div class="modal-backdrop admin-only" id="modal-cert">
+  <div class="modal" role="dialog" aria-labelledby="modal-cert-title">
+    <div class="modal-header">
+      <h3 class="modal-title" id="modal-cert-title">Add Certification</h3>
+      <button class="modal-close" onclick="closeModal('modal-cert')">✕</button>
+    </div>
+    <form id="cert-form" onsubmit="saveCert(); return false;">
+      <input type="hidden" id="cert-edit-id"/>
+
+      <!-- Certificate image upload -->
+    <div class="form-group">
+      <label>Foto / Scan Sertifikat</label>
+      <div style="border:2px dashed var(--bdr2);border-radius:var(--r);padding:20px;text-align:center;
+                  cursor:pointer;position:relative;transition:border-color .2s,background .2s">
+        <input type="file" id="cert-img-file" accept="image/*" onchange="handleCertImg(this)"
+          style="position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%"/>
+        <div style="font-size:1.3rem;margin-bottom:6px">📜</div>
+        <p style="font-size:.8rem;color:var(--muted);margin:0">
+          <span style="color:var(--txt);font-weight:500">Klik upload</span> gambar sertifikat (maks 2MB)
+        </p>
+      </div>
+      <img id="cert-img-preview" src="" alt="Certificate preview"
+           style="width:100%;border-radius:var(--r);margin-top:10px;display:none;max-height:240px;object-fit:contain;border:1px solid var(--bdr)"/>
+      <button id="cert-img-clear" onclick="clearCertImg()"
+              style="display:none;margin-top:8px;background:none;border:1px solid #fca5a5;color:#b91c1c;
+                     border-radius:999px;padding:4px 12px;font-size:.75rem;cursor:pointer">✕ Hapus gambar</button>
+      <input type="hidden" id="cert-img-data"/>
+    </div>
+
+    <div class="form-group">
+      <label>Certification Name *</label>
+      <input type="text" id="cert-name" placeholder="e.g. Data Visualization Using Microsoft Power BI"/>
+    </div>
+    <div class="form-group">
+      <label>Issuing Organisation *</label>
+      <input type="text" id="cert-org" placeholder="e.g. IBLU Academy"/>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Date Issued</label>
+        <input type="text" id="cert-date" placeholder="July 2025"/>
+      </div>
+      <div class="form-group">
+        <label>Credential ID</label>
+        <input type="text" id="cert-cid" placeholder="Optional"/>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Description / Skills Covered</label>
+      <textarea id="cert-desc" rows="3" placeholder="Key skills, topics, or tools covered..."></textarea>
+    </div>
+    <div class="form-group">
+      <label>Certificate Link (URL)</label>
+      <input type="url" id="cert-link" placeholder="https://..."/>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-o btn-sm" onclick="closeModal('modal-cert')">Batal</button>
+      <button type="submit" class="btn btn-p btn-sm">Simpan</button>
+    </div>
+    </form>
+  </div>
+</div>
+
+<!-- ── EDIT LANGUAGES MODAL (admin only) ─────────────────────── -->
+<div class="modal-backdrop admin-only" id="modal-languages">
+  <div class="modal" role="dialog">
+    <div class="modal-header">
+      <h3 class="modal-title">Edit Languages</h3>
+      <button class="modal-close" onclick="closeModal('modal-languages')">✕</button>
+    </div>
+    <p style="font-size:.82rem;color:var(--muted);margin-bottom:16px">
+      Format tiap baris: <code style="background:var(--bg2);padding:2px 6px;border-radius:4px">Bahasa | Level | Persentase | Deskripsi</code>
+    </p>
+    <div class="form-group">
+      <label>Languages (satu per baris)</label>
+      <textarea id="lang-edit-raw" rows="6"
+        placeholder="English | Ukbing UM 460 | 72 | Professional working proficiency&#10;Bahasa Indonesia | C2 Native | 100 | Native speaker"></textarea>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-o btn-sm" onclick="closeModal('modal-languages')">Batal</button>
+      <button class="btn btn-p btn-sm" onclick="saveLanguages()">Simpan</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+<div id="admin-bar" onclick="promptAdminLogin()" title="Klik untuk keluar admin mode">
+  <div class="admin-dot"></div>
+  Admin Mode Aktif — Klik untuk keluar
+</div>
+
+<script src="src/js/constants.js"></script>
+<script src="src/js/shared.js"></script>
+<script src="src/js/supabase-client.js"></script>
+<script>
+/* ══════════════════════════════════════════════════════════
+   STORAGE KEYS
+════════════════════════════════════════════════════════════ */
+const CERT_KEY = 'dita-certifications';
+const K_LANGS  = 'dita-langs';
+
+const DEFAULT_CERT = [
+  {
+    id:'c1', name:'Data Visualization Using Microsoft Power BI',
+    org:'IBLU Academy', date:'July 2025', cid:'', img:'',
+    desc:'Mastered DAX formulas, data modeling, interactive dashboards, and Power Query ETL processes.',
+    link:''
+  },
+  {
+    id:'c2', name:'Data Analyst Professional Certificate',
+    org:'Vinix Academy – Inovasi Lentera Program', date:'Feb – June 2025', cid:'', img:'',
+    desc:'Comprehensive training in Tableau, Orange Data Mining, Python (Pandas, NumPy), Google Colab, Looker Studio with capstone e-commerce project.',
+    link:''
+  }
+];
+
+const DEF_LANGS = [
+  { name:'English',          level:'Ukbing UM 460', pct:72,  desc:'Professional working proficiency' },
+  { name:'Bahasa Indonesia', level:'C2 Native',     pct:100, desc:'Native speaker' }
+];
+
+function loadCert() {
+  const raw = Store.get(CERT_KEY, null);
+  return raw === null ? DEFAULT_CERT : raw;
+}
+function loadLangs() { return Store.get(K_LANGS, DEF_LANGS); }
+
+/* ══ RENDER: CERTIFICATIONS ════════════════════════════════ */
+function renderCert() {
+  const list = document.getElementById('cert-list');
+  const data = loadCert();
+  if (!data.length) {
+    list.innerHTML = `<div class="empty" style="grid-column:1/-1"><p>Belum ada sertifikasi. Klik "+ Add Certification".</p></div>`;
+    return;
+  }
+  list.innerHTML = data.map((c, i) => `
+    <div class="card fu" style="transition-delay:${i*0.08}s;cursor:pointer" onclick="openCertDetail('${c.id}')">
+      ${c.img
+        ? `<img src="${c.img}" alt="${c.name}"
+               style="width:100%;aspect-ratio:4/3;object-fit:contain;border-radius:8px;
+                      margin-bottom:14px;background:var(--bg2);border:1px solid var(--bdr)"/>`
+        : `<div style="width:100%;aspect-ratio:4/3;background:var(--bg2);border-radius:8px;
+                       display:flex;align-items:center;justify-content:center;
+                       font-size:2rem;margin-bottom:14px;border:1px solid var(--bdr)">🏅</div>`
+      }
+      <h3 style="font-family:var(--display);font-size:.97rem;font-weight:700;line-height:1.3;margin-bottom:4px">${c.name}</h3>
+      <p style="font-size:.8rem;color:var(--muted);margin-bottom:8px">${c.org}</p>
+      ${c.date ? `<p style="font-size:.68rem;color:var(--faint);font-weight:500;letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px">${c.date}</p>` : ''}
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;padding-top:12px;border-top:1px solid var(--bdr)">
+        <span style="font-size:.75rem;color:var(--muted)">Klik untuk detail →</span>
+        <div class="admin-only" data-saved-display="flex" style="display:flex;gap:6px" onclick="event.stopPropagation()">
+          <button style="padding:3px 9px;border-radius:99px;font-size:.68rem;border:1px solid var(--bdr);background:var(--bg);color:var(--muted);cursor:pointer"
+                  onclick="editCert('${c.id}')">✏</button>
+          <button style="padding:3px 9px;border-radius:99px;font-size:.68rem;border:1px solid #fca5a5;background:var(--bg);color:#b91c1c;cursor:pointer"
+                  onclick="deleteCert('${c.id}')">✕</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+  initFadeUp();
+  applyAdminUI();
+}
+
+/* ══ RENDER: LANGUAGES ═════════════════════════════════════ */
+function renderLangs() {
+  const langs = loadLangs();
+  document.getElementById('lang-render').innerHTML = langs.map((l, i) => `
+    <div class="card fu" style="transition-delay:${i*0.08}s">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+        <strong style="font-family:var(--display);font-size:1.05rem;font-weight:700">${l.name}</strong>
+        <span class="chip ${l.pct===100?'hi':''}">${l.level}</span>
+      </div>
+      <div style="height:4px;background:var(--bg2);border-radius:2px;margin-bottom:8px">
+        <div style="height:100%;width:${l.pct}%;background:var(--txt);border-radius:2px;transition:width .5s ease"></div>
+      </div>
+      <p style="font-size:.8rem;color:var(--muted)">${l.desc}</p>
+    </div>
+  `).join('');
+  initFadeUp();
+}
+
+/* ══ CERT DETAIL MODAL ═════════════════════════════════════ */
+function openCertDetail(id) {
+  const c = loadCert().find(x => x.id === id);
+  if (!c) return;
+  document.getElementById('cert-detail-title').textContent = c.name;
+  document.getElementById('cert-detail-org').textContent   = c.org;
+  document.getElementById('cert-detail-date').textContent  = c.date || '';
+  document.getElementById('cert-detail-desc').textContent  = c.desc || '';
+  const imgWrap = document.getElementById('cert-detail-img-wrap');
+  const noImg   = document.getElementById('cert-detail-no-img');
+  if (c.img) {
+    document.getElementById('cert-detail-img').src = c.img;
+    imgWrap.style.display = ''; noImg.style.display = 'none';
+  } else {
+    imgWrap.style.display = 'none'; noImg.style.display = '';
+  }
+  const cidWrap = document.getElementById('cert-detail-cid-wrap');
+  if (c.cid) { document.getElementById('cert-detail-cid').textContent = c.cid; cidWrap.style.display = ''; }
+  else { cidWrap.style.display = 'none'; }
+  const linkWrap = document.getElementById('cert-detail-link-wrap');
+  if (c.link) { document.getElementById('cert-detail-link').href = c.link; linkWrap.style.display = ''; }
+  else { linkWrap.style.display = 'none'; }
+  document.getElementById('cert-detail-edit-btn').onclick   = () => { closeModal('modal-cert-detail'); editCert(id); };
+  document.getElementById('cert-detail-delete-btn').onclick = () => { closeModal('modal-cert-detail'); deleteCert(id); };
+  openModal('modal-cert-detail');
+}
+
+/* ══ IMAGE UPLOAD ══════════════════════════════════════════ */
+function handleCertImg(input) {
+  const file = input.files[0];
+  if (!file) return;
+  if (file.size > 2 * 1024 * 1024) { showToast('⚠ Gambar terlalu besar. Maks 2MB.'); input.value=''; return; }
+  const reader = new FileReader();
+  reader.onload = e => {
+    document.getElementById('cert-img-data').value = e.target.result;
+    const p = document.getElementById('cert-img-preview');
+    p.src = e.target.result; p.style.display = 'block';
+    document.getElementById('cert-img-clear').style.display = 'inline-flex';
+  };
+  reader.readAsDataURL(file);
+}
+function clearCertImg() {
+  document.getElementById('cert-img-data').value = '';
+  document.getElementById('cert-img-file').value = '';
+  const p = document.getElementById('cert-img-preview');
+  p.src = ''; p.style.display = 'none';
+  document.getElementById('cert-img-clear').style.display = 'none';
+}
+
+/* ══ ADD MODAL ═════════════════════════════════════════════ */
+function openAddCertModal() {
+  clearCertForm();
+  document.getElementById('modal-cert-title').textContent = 'Add Certification';
+  openModal('modal-cert');
+}
+
+/* ══ SAVE / EDIT / DELETE: CERT ════════════════════════════ */
+function saveCert() {
+  const name   = document.getElementById('cert-name').value.trim();
+  const org    = document.getElementById('cert-org').value.trim();
+  const date   = document.getElementById('cert-date').value.trim();
+  const cid    = document.getElementById('cert-cid').value.trim();
+  const desc   = document.getElementById('cert-desc').value.trim();
+  const link   = document.getElementById('cert-link').value.trim();
+  const img    = document.getElementById('cert-img-data').value;
+  const editId = document.getElementById('cert-edit-id').value;
+  if (!name || !org) { showToast('⚠ Nama dan Organisasi wajib diisi.'); return; }
+  let data = loadCert();
+  let msg = '';
+  if (editId) {
+    // UPDATE: Sync to Supabase if available
+    if (supabaseClient) {
+      updateSupabaseCert(editId, {
+        title: name,
+        issuer: org,
+        date: date,
+        image_url: img
+      }).catch(e => console.error('Supabase update error:', e));
+    }
+    data = data.map(c => c.id === editId ? { ...c, name, org, date, cid, desc, link, img } : c);
+    msg = '✓ Sertifikasi diperbarui!';
+  } else {
+    const newId = genId();
+    // ADD: Sync to Supabase if available
+    if (supabaseClient) {
+      addSupabaseCert({
+        title: name,
+        issuer: org,
+        date: date,
+        image_url: img
+      }).catch(e => console.error('Supabase add error:', e));
+    }
+    data.unshift({ id: newId, name, org, date, cid, desc, link, img });
+    msg = '✓ Sertifikasi ditambahkan!';
+  }
+  Store.set(CERT_KEY, data);
+  closeModal('modal-cert');
+  clearCertForm();
+  renderCert();
+  showToast(msg);
+}
+
+function editCert(id) {
+  const c = loadCert().find(x => x.id === id);
+  if (!c) return;
+  clearCertForm();
+  document.getElementById('cert-edit-id').value = id;
+  document.getElementById('cert-name').value    = c.name;
+  document.getElementById('cert-org').value     = c.org;
+  document.getElementById('cert-date').value    = c.date || '';
+  document.getElementById('cert-cid').value     = c.cid  || '';
+  document.getElementById('cert-desc').value    = c.desc || '';
+  document.getElementById('cert-link').value    = c.link || '';
+  if (c.img) {
+    document.getElementById('cert-img-data').value = c.img;
+    const p = document.getElementById('cert-img-preview');
+    p.src = c.img; p.style.display = 'block';
+    document.getElementById('cert-img-clear').style.display = 'inline-flex';
+  }
+  document.getElementById('modal-cert-title').textContent = 'Edit Certification';
+  openModal('modal-cert');
+}
+
+function deleteCert(id) {
+  if (!confirm('Hapus sertifikasi ini?')) return;
+  // DELETE: Sync to Supabase if available
+  if (supabaseClient) {
+    deleteSupabaseCert(id).catch(e => console.error('Supabase delete error:', e));
+  }
+  Store.set(CERT_KEY, loadCert().filter(c => c.id !== id));
+  showToast('Dihapus.');
+  renderCert();
+}
+
+function clearCertForm() {
+  ['cert-edit-id','cert-name','cert-org','cert-date','cert-cid','cert-desc','cert-link']
+    .forEach(id => { document.getElementById(id).value = ''; });
+  clearCertImg();
+  document.getElementById('modal-cert-title').textContent = 'Add Certification';
+}
+
+/* ══ SAVE / OPEN: LANGUAGES ════════════════════════════════ */
+function openLangModal() {
+  const langs = loadLangs();
+  document.getElementById('lang-edit-raw').value =
+    langs.map(l => `${l.name} | ${l.level} | ${l.pct} | ${l.desc}`).join('\n');
+  openModal('modal-languages');
+}
+
+function saveLanguages() {
+  const raw = document.getElementById('lang-edit-raw').value.trim();
+  if (!raw) { showToast('⚠ Minimal satu bahasa harus diisi.'); return; }
+  const langs = raw.split('\n').filter(Boolean).map(line => {
+    const parts = line.split('|').map(s => s.trim());
+    return {
+      name:  parts[0] || '',
+      level: parts[1] || '',
+      pct:   Math.min(100, Math.max(0, parseInt(parts[2]) || 0)),
+      desc:  parts[3] || ''
+    };
+  }).filter(l => l.name);
+  Store.set(K_LANGS, langs);
+  closeModal('modal-languages');
+  renderLangs();
+  showToast('✓ Languages diperbarui!');
+}
+
+/* ══ INIT ══════════════════════════════════════════════════ */
+document.addEventListener('DOMContentLoaded', () => {
+  initNav('certifications');
+  renderCert();
+  renderLangs();
+});
+</script>
+</body>
+</html>

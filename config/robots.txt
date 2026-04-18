@@ -1,0 +1,16 @@
+User-agent: *
+Allow: /
+Allow: /index.html
+Allow: /experience.html
+Allow: /projects.html
+Allow: /certifications.html
+Allow: /contact.html
+Allow: /assets/
+
+Disallow: /admin/
+Disallow: *.pdf
+
+Sitemap: https://ditaanggraini.com/sitemap.xml
+
+# Crawl-delay is optional
+Crawl-delay: 1
