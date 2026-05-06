@@ -1,0 +1,19 @@
+﻿<!DOCTYPE html>
+<html>
+<head><title>Data Check</title></head>
+<body>
+<h2>Data Tersimpan di localStorage</h2>
+<pre id= cert-data></pre>
+<pre id=proj-data></pre>
+<script>
+  const certData = localStorage.getItem('dita-certifications');
+  const projData = localStorage.getItem('dita-projects');
+  
+  document.getElementById('cert-data').textContent = 'CERTIFICATIONS:\n' + 
+    (certData ? JSON.stringify(JSON.parse(certData), null, 2) : 'Tidak ada data');
+  
+  document.getElementById('proj-data').textContent = 'PROJECTS:\n' + 
+    (projData ? JSON.stringify(JSON.parse(projData), null, 2) : 'Tidak ada data');
+</script>
+</body>
+</html>

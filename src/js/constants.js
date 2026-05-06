@@ -54,16 +54,27 @@ const ADMIN_CONFIG = {
   TIMEOUT_MS: 3600000 // 1 hour
 };
 
-// Supabase Configuration (Cloud Database)
-const SUPABASE_CONFIG = {
-  URL: 'https://yfnqnoukvcnraugtkekj.supabase.co',
-  KEY: 'sb_publishable_EIgGw1INPhP-npJoINoVwQ_ZR0cWi0X',
-  TABLES: {
-    CERTIFICATIONS: 'certifications',
-    EXPERIENCE: 'experience',
-    PROJECTS: 'projects'
-  },
-  ENABLED: true // Set to false to use localStorage only
+// ❌ DEPRECATED: Supabase Configuration (replaced with Cloudinary)
+// Using Cloudinary for image storage instead of Supabase
+
+// Cloudinary Configuration (Image Storage & CDN)
+// 🔑 SETUP REQUIRED: Ganti nilai-nilai di bawah dengan credentials Cloudinary Anda
+// 📖 Lihat docs/CLOUDINARY-SETUP.md untuk panduan setup lengkap
+const CLOUDINARY_CONFIG = {
+  // Get these from https://cloudinary.com/console
+  CLOUD_NAME: 'dbggpqfnc', // e.g., "dita-portfolio"
+  API_KEY: '196345215376837', // For server-side operations only
+  UPLOAD_PRESET: 'dita_portofolio', // Create in Settings → Upload
+  FOLDER: 'dita_portofolio', // Match the Asset folder in Cloudinary
+  
+  // Upload settings
+  MAX_FILE_SIZE: 5 * 1024 * 1024, // 5MB max
+  AUTO_OPTIMIZE: true,
+  TRANSFORMATIONS: {
+    THUMBNAIL: 'c_fill,w_400,h_300,q_auto',
+    FULL: 'c_fit,w_1200,q_auto',
+    PREVIEW: 'c_fit,w_800,q_auto'
+  }
 };
 
 // Image Configuration

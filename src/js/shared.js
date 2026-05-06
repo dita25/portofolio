@@ -294,18 +294,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   initLiveRegion();
   initLazyLoading();
   
-  // Initialize Supabase if enabled
-  if (SUPABASE_CONFIG && SUPABASE_CONFIG.ENABLED) {
-    await loadSupabaseLibrary();
-    const connected = await initSupabase();
-    if (connected) {
-      // Load data from Supabase to localStorage
-      await syncSupabaseToLocal();
-      console.log('✓ Portfolio data synchronized with Supabase');
-    } else {
-      console.log('ℹ Using localStorage only');
-    }
-  }
+  // Using localStorage only (Supabase replaced with Cloudinary)
+  console.log('✓ Using localStorage for data persistence');
 });
 
 /* ── BACK TO TOP BUTTON ──────────────────────────────────────── */

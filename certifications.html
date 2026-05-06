@@ -62,6 +62,7 @@
       <div id="cert-list" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px">
         <!-- Rendered by JS -->
       </div>
+      <div id="cert-pagination"></div>
     </div>
   </section>
 
@@ -223,13 +224,19 @@
 
 <script src="src/js/constants.js"></script>
 <script src="src/js/shared.js"></script>
-<script src="src/js/supabase-client.js"></script>
+<script src="src/js/cloudinary-client.js"></script>
+<script src="src/js/image-upload-handler.js"></script>
+<script src="src/js/debug-storage.js"></script>
+<script src="src/js/debug-save-flow.js"></script>
+<script src="src/js/debug-image-flow.js"></script>
 <script>
 /* ══════════════════════════════════════════════════════════
-   STORAGE KEYS
+   STORAGE KEYS & PAGINATION
 ════════════════════════════════════════════════════════════ */
 const CERT_KEY = 'dita-certifications';
 const K_LANGS  = 'dita-langs';
+let _certPage = 0;
+const _certPerPage = 10;
 
 const DEFAULT_CERT = [
   {
@@ -243,7 +250,55 @@ const DEFAULT_CERT = [
     org:'Vinix Academy – Inovasi Lentera Program', date:'Feb – June 2025', cid:'', img:'',
     desc:'Comprehensive training in Tableau, Orange Data Mining, Python (Pandas, NumPy), Google Colab, Looker Studio with capstone e-commerce project.',
     link:''
-  }
+  },
+  { id:'c3', name:'Google Data Analytics Professional Certificate', org:'Coursera - Google', date:'Jan 2025', cid:'', img:'', desc:'Excel, SQL, Tableau, R programming for data analysis and visualization.', link:'' },
+  { id:'c4', name:'Advanced Excel for Business Analytics', org:'Udemy - Maven Analytics', date:'Dec 2024', cid:'', img:'', desc:'Advanced formulas, pivot tables, data modeling, and dashboard creation.', link:'' },
+  { id:'c5', name:'SQL for Data Analysis', org:'DataCamp', date:'Nov 2024', cid:'', img:'', desc:'Advanced SQL queries, window functions, and complex joins for data extraction.', link:'' },
+  { id:'c6', name:'Python for Data Science Specialization', org:'Coursera - IBM', date:'Oct 2024', cid:'', img:'', desc:'NumPy, Pandas, Matplotlib, Scikit-learn for data analysis and machine learning basics.', link:'' },
+  { id:'c7', name:'Tableau Desktop Specialist Certification', org:'Tableau', date:'Sep 2024', cid:'', img:'', desc:'Interactive visualizations, dashboards, storytelling with data, and Tableau Server basics.', link:'' },
+  { id:'c8', name:'Business Intelligence & Analytics', org:'Udacity Nanodegree', date:'Aug 2024', cid:'', img:'', desc:'Data warehousing, ETL processes, dimensional modeling, and analytics foundations.', link:'' },
+  { id:'c9', name:'Statistical Analysis & Inference', org:'edX - Berkeley', date:'July 2024', cid:'', img:'', desc:'Hypothesis testing, regression analysis, statistical modeling, and interpretation.', link:'' },
+  { id:'c10', name:'Web Development Fundamentals', org:'FreeCodeCamp', date:'June 2024', cid:'', img:'', desc:'HTML, CSS, JavaScript fundamentals for front-end web development.', link:'' },
+  { id:'c11', name:'React.js Complete Guide', org:'Udemy - Maximilian Schwarzmüller', date:'May 2024', cid:'', img:'', desc:'React hooks, state management, routing, and modern front-end development patterns.', link:'' },
+  { id:'c12', name:'Full-Stack Web Development with MERN', org:'Coursera - Meta', date:'Apr 2024', cid:'', img:'', desc:'MongoDB, Express, React, Node.js stack for full-stack application development.', link:'' },
+  { id:'c13', name:'Laravel & PHP Web Development', org:'Laracasts', date:'Mar 2024', cid:'', img:'', desc:'Laravel framework, MVC architecture, database relationships, and ORM expertise.', link:'' },
+  { id:'c14', name:'Database Design & Management', org:'Udemy', date:'Feb 2024', cid:'', img:'', desc:'Entity-Relationship diagrams, normalization, and optimization for relational databases.', link:'' },
+  { id:'c15', name:'API Development & RESTful Services', org:'Pluralsight', date:'Jan 2024', cid:'', img:'', desc:'Building scalable APIs, authentication, versioning, and API security best practices.', link:'' },
+  { id:'c16', name:'Cloud Computing with AWS', org:'A Cloud Guru', date:'Dec 2023', cid:'', img:'', desc:'EC2, S3, RDS, Lambda, and infrastructure management on Amazon Web Services.', link:'' },
+  { id:'c17', name:'Docker & Kubernetes Essentials', org:'Linux Academy', date:'Nov 2023', cid:'', img:'', desc:'Containerization, orchestration, microservices architecture, and DevOps practices.', link:'' },
+  { id:'c18', name:'Git & Version Control Mastery', org:'Codecademy', date:'Oct 2023', cid:'', img:'', desc:'Git workflows, branching strategies, collaboration, and GitHub best practices.', link:'' },
+  { id:'c19', name:'Machine Learning Foundations', org:'Coursera - Andrew Ng', date:'Sep 2023', cid:'', img:'', desc:'Supervised and unsupervised learning, feature engineering, model evaluation and selection.', link:'' },
+  { id:'c20', name:'Deep Learning Specialization', org:'Coursera - DeepLearning.AI', date:'Aug 2023', cid:'', img:'', desc:'Neural networks, CNNs, RNNs, optimization algorithms, and practical deep learning projects.', link:'' },
+  { id:'c21', name:'Data Science with R', org:'DataCamp', date:'July 2023', cid:'', img:'', desc:'ggplot2, dplyr, tidyr for data manipulation, visualization, and statistical analysis in R.', link:'' },
+  { id:'c22', name:'Advanced Statistics for Data Science', org:'MIT OpenCourseWare', date:'June 2023', cid:'', img:'', desc:'Probability theory, distributions, hypothesis testing, and advanced statistical methods.', link:'' },
+  { id:'c23', name:'Time Series Analysis & Forecasting', org:'Udemy', date:'May 2023', cid:'', img:'', desc:'ARIMA, exponential smoothing, seasonality detection, and forecasting with time series data.', link:'' },
+  { id:'c24', name:'Data Mining & Pattern Recognition', org:'Coursera', date:'Apr 2023', cid:'', img:'', desc:'Classification, clustering, association rules, and knowledge discovery in large datasets.', link:'' },
+  { id:'c25', name:'Business Analytics & Strategy', org:'INSEAD via Coursera', date:'Mar 2023', cid:'', img:'', desc:'Strategic decision-making using data, KPI definition, and business intelligence frameworks.', link:'' },
+  { id:'c26', name:'Product Analytics Foundations', org:'Reforge', date:'Feb 2023', cid:'', img:'', desc:'User behavior analysis, metrics definition, experimentation, and product decision-making.', link:'' },
+  { id:'c27', name:'Financial Data Analysis', org:'DataCamp', date:'Jan 2023', cid:'', img:'', desc:'Financial modeling, portfolio analysis, risk assessment, and investment analytics.', link:'' },
+  { id:'c28', name:'Data Storytelling & Communication', org:'Storytelling with Data', date:'Dec 2022', cid:'', img:'', desc:'Effective data visualization, narrative building, and communication with stakeholders.', link:'' },
+  { id:'c29', name:'Adobe Analytics Implementation', org:'Adobe', date:'Nov 2022', cid:'', img:'', desc:'Web analytics setup, tracking implementation, segmentation, and audience analysis.', link:'' },
+  { id:'c30', name:'Google Analytics 4 Certification', org:'Google', date:'Oct 2022', cid:'', img:'', desc:'GA4 implementation, event tracking, audience building, and conversion analysis.', link:'' },
+  { id:'c31', name:'Advanced Python Programming', org:'Real Python', date:'Sep 2022', cid:'', img:'', desc:'Decorators, generators, context managers, and advanced object-oriented programming patterns.', link:'' },
+  { id:'c32', name:'Web Scraping & Automation', org:'Udemy', date:'Aug 2022', cid:'', img:'', desc:'Beautiful Soup, Selenium, requests library for data collection and process automation.', link:'' },
+  { id:'c33', name:'Data Engineering Fundamentals', org:'DataCamp', date:'July 2022', cid:'', img:'', desc:'ETL pipelines, data warehousing, Apache Spark, and scalable data processing.', link:'' },
+  { id:'c34', name:'NoSQL Databases & MongoDB', org:'MongoDB University', date:'June 2022', cid:'', img:'', desc:'Document-based databases, aggregation framework, sharding, and MongoDB deployment.', link:'' },
+  { id:'c35', name:'Data Visualization Design Principles', org:'Coursera', date:'May 2022', cid:'', img:'', desc:'Color theory, typography, layout principles for effective data communication.', link:'' },
+  { id:'c36', name:'Looker Studio Advanced', org:'Google Workspace', date:'Apr 2022', cid:'', img:'', desc:'Custom reports, blended data, looker functions, and dashboard optimization.', link:'' },
+  { id:'c37', name:'Power Query & Power Pivot Mastery', org:'Udemy - Maven Analytics', date:'Mar 2022', cid:'', img:'', desc:'Data transformation, relationships, measures, and advanced data modeling in Excel.', link:'' },
+  { id:'c38', name:'User Experience (UX) Design', org:'Interaction Design Foundation', date:'Feb 2022', cid:'', img:'', desc:'User research, wireframing, prototyping, and usability testing principles.', link:'' },
+  { id:'c39', name:'Digital Marketing Analytics', org:'Google Digital Garage', date:'Jan 2022', cid:'', img:'', desc:'SEO, SEM, social media analytics, conversion optimization, and marketing ROI measurement.', link:'' },
+  { id:'c40', name:'Agile & Scrum Methodologies', org:'Scrum.org', date:'Dec 2021', cid:'', img:'', desc:'Agile principles, scrum framework, sprint planning, and team collaboration practices.', link:'' },
+  { id:'c41', name:'Project Management Essentials', org:'PMI via edX', date:'Nov 2021', cid:'', img:'', desc:'Scope, schedule, budget management, risk assessment, and stakeholder communication.', link:'' },
+  { id:'c42', name:'Cybersecurity Fundamentals', org:'CompTIA Security+', date:'Oct 2021', cid:'', img:'', desc:'Network security, encryption, threat assessment, and security best practices.', link:'' },
+  { id:'c43', name:'Data Privacy & GDPR Compliance', org:'DataCamp', date:'Sep 2021', cid:'', img:'', desc:'Regulatory requirements, data protection, consent management, and privacy policy implementation.', link:'' },
+  { id:'c44', name:'Advanced Excel Dashboards', org:'Udemy', date:'Aug 2021', cid:'', img:'', desc:'Dynamic dashboards, interactive controls, VBA automation, and performance optimization.', link:'' },
+  { id:'c45', name:'Business Intelligence Best Practices', org:'Microsoft', date:'July 2021', cid:'', img:'', desc:'Data governance, quality assurance, semantic models, and enterprise BI architecture.', link:'' },
+  { id:'c46', name:'Customer Data Platforms', org:'Coursera', date:'June 2021', cid:'', img:'', desc:'CDP implementation, customer segmentation, personalization, and unified customer profiles.', link:'' },
+  { id:'c47', name:'E-commerce Analytics', org:'Google Analytics Academy', date:'May 2021', cid:'', img:'', desc:'Transaction tracking, product analytics, customer journey, and e-commerce optimization.', link:'' },
+  { id:'c48', name:'Healthcare Data Analytics', org:'Coursera', date:'Apr 2021', cid:'', img:'', desc:'HIPAA compliance, EHR systems, patient outcomes analysis, and clinical decision support.', link:'' },
+  { id:'c49', name:'Real Estate Market Analysis', org:'Coursera', date:'Mar 2021', cid:'', img:'', desc:'Property valuation, market trends, investment analysis, and predictive modeling for real estate.', link:'' },
+  { id:'c50', name:'AI & Ethics for Decision Making', org:'edX - MIT', date:'Feb 2021', cid:'', img:'', desc:'Bias in algorithms, ethical implications, responsible AI, and fairness in machine learning.', link:'' },
 ];
 
 const DEF_LANGS = [
@@ -257,12 +312,70 @@ function loadCert() {
 }
 function loadLangs() { return Store.get(K_LANGS, DEF_LANGS); }
 
-/* ══ RENDER: CERTIFICATIONS ════════════════════════════════ */
-function renderCert() {
-  const list = document.getElementById('cert-list');
+/* ══ PAGINATION HELPERS ════════════════════════════════════ */
+function getCertPaginated() {
   const data = loadCert();
-  if (!data.length) {
+  const start = _certPage * _certPerPage;
+  const end = start + _certPerPage;
+  return data.slice(start, end);
+}
+
+function getTotalCertPages() {
+  return Math.ceil(loadCert().length / _certPerPage);
+}
+
+function updateCertPagination() {
+  const totalPages = getTotalCertPages();
+  const paginationWrap = document.getElementById('cert-pagination');
+  if (totalPages <= 1) {
+    paginationWrap.innerHTML = '';
+    return;
+  }
+  paginationWrap.innerHTML = `
+    <div style="display:flex;align-items:center;justify-content:center;gap:16px;margin-top:48px;flex-wrap:wrap;padding:24px;border-top:1px solid var(--bdr)">
+      <button onclick="prevCertPage()" style="padding:10px 20px;border:1.5px solid var(--bdr);background:var(--bg);color:var(--txt);border-radius:8px;cursor:pointer;font-weight:500;font-size:.85rem;transition:all var(--dur) var(--ease);letter-spacing:.01em" 
+              onmouseover="if(!this.disabled){this.style.background='var(--bg2)';this.style.borderColor='var(--txt)';this.style.transform='translateY(-2px)';this.style.boxShadow='var(--shadow-sm)'}" 
+              onmouseout="if(!this.disabled){this.style.background='var(--bg)';this.style.borderColor='var(--bdr)';this.style.transform='translateY(0)';this.style.boxShadow='none'}" 
+              ${_certPage === 0 ? 'disabled style="opacity:0.5;cursor:not-allowed"' : ''}>← Previous</button>
+      <span style="color:var(--muted);font-size:.85rem;font-weight:500;min-width:150px;text-align:center">Page <strong style="color:var(--txt)">${_certPage + 1}</strong> of <strong style="color:var(--txt)">${totalPages}</strong></span>
+      <button onclick="nextCertPage()" style="padding:10px 20px;border:1.5px solid var(--bdr);background:var(--bg);color:var(--txt);border-radius:8px;cursor:pointer;font-weight:500;font-size:.85rem;transition:all var(--dur) var(--ease);letter-spacing:.01em" 
+              onmouseover="if(!this.disabled){this.style.background='var(--bg2)';this.style.borderColor='var(--txt)';this.style.transform='translateY(-2px)';this.style.boxShadow='var(--shadow-sm)'}" 
+              onmouseout="if(!this.disabled){this.style.background='var(--bg)';this.style.borderColor='var(--bdr)';this.style.transform='translateY(0)';this.style.boxShadow='none'}" 
+              ${_certPage === totalPages - 1 ? 'disabled style="opacity:0.5;cursor:not-allowed"' : ''}>Next →</button>
+    </div>
+  `;
+}
+
+function nextCertPage() {
+  const totalPages = getTotalCertPages();
+  if (_certPage < totalPages - 1) {
+    _certPage++;
+    renderCert();
+  }
+}
+
+function prevCertPage() {
+  if (_certPage > 0) {
+    _certPage--;
+    renderCert();
+  }
+}
+
+/* ══ RENDER: CERTIFICATIONS ════════════════════════════════ */
+function clampCertPage() {
+  const totalPages = getTotalCertPages();
+  if (_certPage >= totalPages) {
+    _certPage = Math.max(0, totalPages - 1);
+  }
+}
+
+function renderCert() {
+  clampCertPage();
+  const list = document.getElementById('cert-list');
+  const data = getCertPaginated();
+  if (!loadCert().length) {
     list.innerHTML = `<div class="empty" style="grid-column:1/-1"><p>Belum ada sertifikasi. Klik "+ Add Certification".</p></div>`;
+    document.getElementById('cert-pagination').innerHTML = '';
     return;
   }
   list.innerHTML = data.map((c, i) => `
@@ -291,6 +404,7 @@ function renderCert() {
   `).join('');
   initFadeUp();
   applyAdminUI();
+  updateCertPagination();
 }
 
 /* ══ RENDER: LANGUAGES ═════════════════════════════════════ */
@@ -314,18 +428,29 @@ function renderLangs() {
 /* ══ CERT DETAIL MODAL ═════════════════════════════════════ */
 function openCertDetail(id) {
   const c = loadCert().find(x => x.id === id);
-  if (!c) return;
+  if (!c) {
+    console.warn('❌ Certification not found:', id);
+    return;
+  }
+  
+  console.log('📖 Opening cert detail:', { id, name: c.name, hasImage: !!c.img, imgLength: c.img?.length || 0 });
+  
   document.getElementById('cert-detail-title').textContent = c.name;
   document.getElementById('cert-detail-org').textContent   = c.org;
   document.getElementById('cert-detail-date').textContent  = c.date || '';
   document.getElementById('cert-detail-desc').textContent  = c.desc || '';
   const imgWrap = document.getElementById('cert-detail-img-wrap');
   const noImg   = document.getElementById('cert-detail-no-img');
-  if (c.img) {
+  
+  if (c.img && c.img.trim().length > 0) {
+    console.log('✓ Image found, setting src:', c.img.substring(0, 50) + '...');
     document.getElementById('cert-detail-img').src = c.img;
-    imgWrap.style.display = ''; noImg.style.display = 'none';
+    imgWrap.style.display = ''; 
+    noImg.style.display = 'none';
   } else {
-    imgWrap.style.display = 'none'; noImg.style.display = '';
+    console.log('⚠ No image for this cert');
+    imgWrap.style.display = 'none'; 
+    noImg.style.display = '';
   }
   const cidWrap = document.getElementById('cert-detail-cid-wrap');
   if (c.cid) { document.getElementById('cert-detail-cid').textContent = c.cid; cidWrap.style.display = ''; }
@@ -339,20 +464,53 @@ function openCertDetail(id) {
 }
 
 /* ══ IMAGE UPLOAD ══════════════════════════════════════════ */
-function handleCertImg(input) {
+async function handleCertImg(input) {
   const file = input.files[0];
   if (!file) return;
-  if (file.size > 2 * 1024 * 1024) { showToast('⚠ Gambar terlalu besar. Maks 2MB.'); input.value=''; return; }
-  const reader = new FileReader();
-  reader.onload = e => {
-    document.getElementById('cert-img-data').value = e.target.result;
-    const p = document.getElementById('cert-img-preview');
-    p.src = e.target.result; p.style.display = 'block';
-    document.getElementById('cert-img-clear').style.display = 'inline-flex';
-  };
-  reader.readAsDataURL(file);
+  
+  // Use async upload handler from image-upload-handler.js
+  const result = await handleCertImg_Upload(input);
+  
+  // Reset input
+  input.value = '';
 }
+
+// Alias untuk backward compatibility
+async function handleCertImg_Upload(input) {
+  const file = input.files[0];
+  if (!file) return;
+  
+  // Upload dengan Cloudinary
+  const result = await uploadImageWithCompression(file, 'cert');
+  
+  if (result.success) {
+    // Store URL globally
+    _certImageUrl = result.url;
+    _certCloudinaryId = result.cloudinaryId;
+    
+    // Show preview
+    const preview = document.getElementById('cert-img-preview');
+    if (preview) {
+      preview.src = result.url;
+      preview.style.display = 'block';
+    }
+    
+    const clearBtn = document.getElementById('cert-img-clear');
+    if (clearBtn) clearBtn.style.display = 'inline-flex';
+    
+    console.log('✓ Image uploaded successfully:', result.url);
+  } else {
+    console.error('❌ Image upload failed:', result.error);
+    showToast(`❌ ${result.error}`);
+  }
+}
+
 function clearCertImg() {
+  // Clear from Cloudinary globals
+  _certImageUrl = '';
+  _certCloudinaryId = '';
+  
+  // Clear from form
   document.getElementById('cert-img-data').value = '';
   document.getElementById('cert-img-file').value = '';
   const p = document.getElementById('cert-img-preview');
@@ -375,40 +533,50 @@ function saveCert() {
   const cid    = document.getElementById('cert-cid').value.trim();
   const desc   = document.getElementById('cert-desc').value.trim();
   const link   = document.getElementById('cert-link').value.trim();
-  const img    = document.getElementById('cert-img-data').value;
   const editId = document.getElementById('cert-edit-id').value;
+  
+  // Get image from Cloudinary/fallback or use existing
+  let img = _certImageUrl || '';
+  if (!img && editId) {
+    const existing = loadCert().find(c => c.id === editId);
+    img = existing ? existing.img : '';
+  }
+  
+  console.log('💾 Saving certification:', {
+    name,
+    org,
+    date,
+    imageUrl: img ? (img.substring(0, 50) + '...') : '(empty)',
+    imageSource: img ? (_certImageUrl ? 'from upload' : 'from existing') : 'none',
+    editId: editId ? 'EDIT' : 'ADD'
+  });
+  
   if (!name || !org) { showToast('⚠ Nama dan Organisasi wajib diisi.'); return; }
+  
   let data = loadCert();
   let msg = '';
+  
   if (editId) {
-    // UPDATE: Sync to Supabase if available
-    if (supabaseClient) {
-      updateSupabaseCert(editId, {
-        title: name,
-        issuer: org,
-        date: date,
-        image_url: img
-      }).catch(e => console.error('Supabase update error:', e));
-    }
+    // UPDATE existing certification
     data = data.map(c => c.id === editId ? { ...c, name, org, date, cid, desc, link, img } : c);
     msg = '✓ Sertifikasi diperbarui!';
+    console.log(`[CERT UPDATE] ID: ${editId}, Name: ${name}, Image: ${img ? 'yes (' + img.substring(0,30) + '...)' : 'no'}`);
   } else {
+    // ADD new certification
     const newId = genId();
-    // ADD: Sync to Supabase if available
-    if (supabaseClient) {
-      addSupabaseCert({
-        title: name,
-        issuer: org,
-        date: date,
-        image_url: img
-      }).catch(e => console.error('Supabase add error:', e));
-    }
     data.unshift({ id: newId, name, org, date, cid, desc, link, img });
     msg = '✓ Sertifikasi ditambahkan!';
+    console.log(`[CERT ADD] ID: ${newId}, Name: ${name}, Image: ${img ? 'yes (' + img.substring(0,30) + '...)' : 'no'}`);
   }
+  
+  // Save to localStorage
   Store.set(CERT_KEY, data);
+  console.log(`[CERT SAVED] Total certifications: ${data.length}`);
+  console.log('[STORED DATA]', data[0]); // Log first cert to verify
+  
   closeModal('modal-cert');
   clearCertForm();
+  _certPage = 0;
   renderCert();
   showToast(msg);
 }
@@ -449,7 +617,10 @@ function clearCertForm() {
   ['cert-edit-id','cert-name','cert-org','cert-date','cert-cid','cert-desc','cert-link']
     .forEach(id => { document.getElementById(id).value = ''; });
   clearCertImg();
+  _certImageUrl = ''; // Reset global image URL
+  _certCloudinaryId = ''; // Reset Cloudinary ID
   document.getElementById('modal-cert-title').textContent = 'Add Certification';
+  console.log('🗑️ Form cleared, image URLs reset');
 }
 
 /* ══ SAVE / OPEN: LANGUAGES ════════════════════════════════ */
