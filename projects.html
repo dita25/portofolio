@@ -718,44 +718,99 @@ function openDetail(id) {
 }
 
 /* ══════════════════════════════════════════════════════════
-   IMAGE UPLOAD (base64 — stored in localStorage)
+   IMAGE UPLOAD (Cloudinary with compression)
 ════════════════════════════════════════════════════════════ */
-/* Multi-image state */
-let _editImgs = [];  /* array of base64 strings */
+/* Multi-image state - CLOUDINARY URLS (defined in image-upload-handler.js)
+   let _projectImageUrls = [];  // Array of { url, cloudinaryId, width, height }
+*/
 
-function handleImgUpload(input) {
+async function handleImgUpload(input) {
   const files = Array.from(input.files);
   if (!files.length) return;
-  let loaded = 0;
-  files.forEach(file => {
-    if (file.size > 2 * 1024 * 1024) { showToast('⚠ ' + file.name + ' terlalu besar (maks 2MB), dilewati.'); loaded++; checkDone(); return; }
-    const reader = new FileReader();
-    reader.onload = e => { _editImgs.push(e.target.result); loaded++; checkDone(); };
-    reader.readAsDataURL(file);
-  });
-  function checkDone() { if (loaded === files.length) { input.value=''; renderThumbs(); } }
+
+  showToast(`📤 Mengupload ${files.length} gambar...`);
+
+  let successCount = 0;
+  let failCount = 0;
+
+  // Upload each file with compression
+  for (let i = 0; i < files.length; i++) {
+    const file = files[i];
+
+    // Validate file size (before compression)
+    if (file.size > 5 * 1024 * 1024) {
+      showToast(`⚠ ${file.name} terlalu besar (>5MB), dilewati.`);
+      failCount++;
+      continue;
+    }
+
+    try {
+      // Upload with compression to Cloudinary
+      const result = await uploadImageWithCompression(file, 'project');
+
+      if (result.success) {
+        // Store Cloudinary URL and metadata
+        _projectImageUrls.push({
+          url: result.url,
+          cloudinaryId: result.cloudinaryId,
+          width: result.width,
+          height: result.height
+        });
+        successCount++;
+        console.log(`✓ Image ${i+1} uploaded:`, result.url);
+      } else {
+        failCount++;
+      }
+    } catch (error) {
+      console.error(`Error uploading ${file.name}:`, error);
+      failCount++;
+    }
+  }
+
+  // Update thumbnails
+  renderThumbs();
+
+  // Show summary
+  if (successCount > 0) {
+    showToast(`✓ ${successCount} gambar berhasil diupload ke Cloudinary`);
+  }
+  if (failCount > 0) {
+    showToast(`⚠ ${failCount} gambar gagal`);
+  }
+
+  input.value = '';
 }
 
 function renderThumbs() {
   const wrap = document.getElementById('img-thumbs-wrap');
   if (!wrap) return;
-  wrap.innerHTML = _editImgs.map((src, i) => `
+
+  if (_projectImageUrls.length === 0) {
+    wrap.innerHTML = '';
+    const hint = document.querySelector('#img-upload-area p');
+    if (hint) hint.innerHTML = '<span>Klik untuk upload</span> — bisa pilih beberapa gambar sekaligus';
+    return;
+  }
+
+  wrap.innerHTML = _projectImageUrls.map((img, i) => `
     <div class="img-thumb-wrap">
-      <img src="${src}" alt="img ${i+1}"/>
+      <img src="${img.url}" alt="project-image-${i}" style="width:100%;height:100%;object-fit:cover"/>
       <button type="button" class="img-thumb-del" onclick="removeThumb(${i})" title="Hapus">✕</button>
     </div>
   `).join('');
+  
   const hint = document.querySelector('#img-upload-area p');
-  if (hint) hint.innerHTML = `<span>${_editImgs.length} gambar</span> — klik untuk tambah lagi`;
+  if (hint) hint.innerHTML = `<span>${_projectImageUrls.length} gambar</span> — klik untuk tambah lagi`;
 }
 
 function removeThumb(i) {
-  _editImgs.splice(i, 1);
+  // Remove from Cloudinary URLs array
+  _projectImageUrls.splice(i, 1);
   renderThumbs();
 }
 
 function clearImg() {
-  _editImgs = [];
+  _projectImageUrls = [];
   document.getElementById('proj-img-file').value = '';
   const wrap = document.getElementById('img-thumbs-wrap');
   if (wrap) wrap.innerHTML = '';
@@ -885,8 +940,8 @@ function editProj(id) {
   document.getElementById('proj-result').value     = p.result || '';
   document.getElementById('modal-proj-title').textContent = 'Edit Project';
 
-  /* Restore multi-images */
-  _editImgs = (p.imgs || []).slice();
+  /* Restore multi-images from Cloudinary URLs */
+  _projectImageUrls = (p.imgs || []).slice();
   renderThumbs();
 
   /* Restore links */
@@ -918,7 +973,7 @@ function clearProjForm() {
   document.getElementById('proj-desc').value     = '';
   document.getElementById('proj-result').value   = '';
   clearImg();
-  _editImgs = [];
+  _projectImageUrls = [];
   clearLinkBuilder();
   document.getElementById('modal-proj-title').textContent = 'Add Project';
 }
