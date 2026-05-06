@@ -610,7 +610,7 @@ function renderProj() {
     <article class="pcard fu" style="transition-delay:${i*0.07}s" onclick="openDetail('${p.id}')">
       <div class="pcard-img" style="color:var(--bdr2);position:relative">
         ${(p.imgs && p.imgs.length)
-          ? `<img src="${p.imgs[0]}" alt="${p.title}" style="width:100%;height:100%;object-fit:cover"/>`
+          ? `<img src="${typeof p.imgs[0] === 'string' ? p.imgs[0] : p.imgs[0].url}" alt="${p.title}" style="width:100%;height:100%;object-fit:cover"/>`
           : PH_ICONS[i % PH_ICONS.length]
         }
         <div class="pcard-ov">Lihat Detail →</div>
@@ -652,27 +652,31 @@ function openDetail(id) {
   /* Slideshow */
   const swrap = document.getElementById('detail-slideshow-wrap');
   const imgs = p.imgs && p.imgs.length ? p.imgs : [];
-  if (imgs.length === 0) {
+  
+  // Convert to URL array (handle both old base64 strings and new Cloudinary objects)
+  const imgUrls = imgs.map(img => typeof img === 'string' ? img : img.url);
+  
+  if (imgUrls.length === 0) {
     const idx = loadProj().findIndex(x => x.id === id);
     swrap.innerHTML = `<div class="detail-hero">${PH_ICONS[idx % PH_ICONS.length]}</div>`;
-  } else if (imgs.length === 1) {
-    swrap.innerHTML = `<div class="detail-hero"><img src="${imgs[0]}" alt="${p.title}" style="width:100%;height:100%;object-fit:cover"/></div>`;
+  } else if (imgUrls.length === 1) {
+    swrap.innerHTML = `<div class="detail-hero"><img src="${imgUrls[0]}" alt="${p.title}" style="width:100%;height:100%;object-fit:cover"/></div>`;
   } else {
-    const slides = imgs.map((src,i) =>
+    const slides = imgUrls.map((src,i) =>
       `<div class="slide${i===0?' active':''}"><img src="${src}" alt="slide ${i+1}"/></div>`
     ).join('');
-    const dots = imgs.map((_,i) =>
+    const dots = imgUrls.map((_,i) =>
       `<button class="slide-dot${i===0?' active':''}" onclick="goSlide(${i})"></button>`
     ).join('');
     swrap.innerHTML = `
       <div class="slideshow" id="detail-slideshow">
         ${slides}
-        ${imgs.length>1?`<button class="slide-nav slide-prev" onclick="prevSlide()">‹</button>
+        ${imgUrls.length>1?`<button class="slide-nav slide-prev" onclick="prevSlide()">‹</button>
         <button class="slide-nav slide-next" onclick="nextSlide()">›</button>
         <div class="slide-dots">${dots}</div>`:''}
       </div>`;
     window._curSlide = 0;
-    window._totalSlides = imgs.length;
+    window._totalSlides = imgUrls.length;
   }
 
   /* Tags */

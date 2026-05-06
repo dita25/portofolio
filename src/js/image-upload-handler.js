@@ -33,11 +33,11 @@ async function uploadImageWithCompression(file, type = 'project') {
 
     showToast(`🔄 Mengompresi ${file.name}...`);
 
-    // Compress image
+    // Compress image using config values
     const compressedBlob = await compressImage(
       file,
-      0.7,  // quality
-      400   // max dimensions
+      IMAGE_CONFIG.COMPRESSION_QUALITY,  // From constants.js
+      IMAGE_CONFIG.MAX_DIMENSIONS        // From constants.js
     );
 
     // Check if Cloudinary is properly configured

@@ -43,7 +43,7 @@ function loadCloudinaryScript() {
  * @param {number} maxDimensions - Max width/height in pixels
  * @returns {Promise<Blob>} - Compressed image blob
  */
-async function compressImage(file, quality = 0.7, maxDimensions = 400) {
+async function compressImage(file, quality = 1.0, maxDimensions = 2400) {
   return new Promise((resolve, reject) => {
     try {
       const reader = new FileReader();

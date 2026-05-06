@@ -79,10 +79,10 @@ const CLOUDINARY_CONFIG = {
 
 // Image Configuration
 const IMAGE_CONFIG = {
-  MAX_SIZE_MB: 2,
-  MAX_SIZE_BYTES: 2 * 1024 * 1024,
-  MAX_DIMENSIONS: 400, // Max width/height in px
-  COMPRESSION_QUALITY: 0.7,
+  MAX_SIZE_MB: 10,
+  MAX_SIZE_BYTES: 10 * 1024 * 1024,
+  MAX_DIMENSIONS: 2400, // Max width/height in px (maksimal untuk claritas tinggi)
+  COMPRESSION_QUALITY: 1.0, // Maksimal quality tanpa lossy compression
   FALLBACK_FORMAT: 'image/jpeg'
 };
 
