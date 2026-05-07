@@ -357,28 +357,10 @@ function saveExp() {
   let data = loadExp();
   let msg = '';
   if (editId) {
-    // UPDATE: Sync to Supabase if available
-    if (supabaseClient) {
-      updateSupabaseExp(editId, {
-        position: title,
-        company: org,
-        duration: start + ' - ' + end,
-        description: bullets.join(' | ')
-      }).catch(e => console.error('Supabase update error:', e));
-    }
     data = data.map(e => e.id === editId ? { ...e, title, org, start, end, bullets, tools } : e);
     msg = '✓ Experience updated!';
   } else {
     const newId = genId();
-    // ADD: Sync to Supabase if available
-    if (supabaseClient) {
-      addSupabaseExp({
-        position: title,
-        company: org,
-        duration: start + ' - ' + end,
-        description: bullets.join(' | ')
-      }).catch(e => console.error('Supabase add error:', e));
-    }
     data.unshift({ id: newId, title, org, start, end, bullets, tools });
     msg = '✓ Experience added!';
   }
@@ -405,10 +387,6 @@ function editExp(id) {
 
 function deleteExp(id) {
   if (!confirm('Delete this experience entry?')) return;
-  // DELETE: Sync to Supabase if available
-  if (supabaseClient) {
-    deleteSupabaseExp(id).catch(e => console.error('Supabase delete error:', e));
-  }
   Store.set(EXP_KEY, loadExp().filter(e => e.id !== id));
   showToast('Deleted.');
   renderExp();
@@ -466,10 +444,6 @@ function editEdu(id) {
 
 function deleteEdu(id) {
   if (!confirm('Delete this education entry?')) return;
-  // DELETE: Sync to Supabase if available
-  if (supabaseClient) {
-    deleteSupabaseExp(id).catch(e => console.error('Supabase delete error:', e));
-  }
   Store.set(EDU_KEY, loadEdu().filter(e => e.id !== id));
   showToast('Deleted.');
   renderEdu();

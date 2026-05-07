@@ -604,10 +604,6 @@ function editCert(id) {
 
 function deleteCert(id) {
   if (!confirm('Hapus sertifikasi ini?')) return;
-  // DELETE: Sync to Supabase if available
-  if (supabaseClient) {
-    deleteSupabaseCert(id).catch(e => console.error('Supabase delete error:', e));
-  }
   Store.set(CERT_KEY, loadCert().filter(c => c.id !== id));
   showToast('Dihapus.');
   renderCert();

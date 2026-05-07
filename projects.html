@@ -958,10 +958,6 @@ function editProj(id) {
 
 function deleteProj(id) {
   if (!confirm('Hapus project ini?')) return;
-  // DELETE: Sync to Supabase if available
-  if (supabaseClient) {
-    deleteSupabaseProj(id).catch(e => console.error('Supabase delete error:', e));
-  }
   Store.set(PROJ_KEY, loadProj().filter(p => p.id !== id));
   showToast('Project dihapus.');
   _projPage = 0;
