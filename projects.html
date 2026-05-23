@@ -235,6 +235,29 @@
         <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
           <!-- Category filter (visible to all) -->
           <div id="filter-wrap" style="display:flex;gap:6px;flex-wrap:wrap"></div>
+          
+          <!-- Sort dropdown -->
+          <div style="position:relative">
+            <button id="sort-btn" class="filter-pill" style="display:inline-flex;align-items:center;gap:4px;cursor:pointer"
+                    onclick="toggleSortMenu()">
+              Recently Added <span style="font-size:0.7rem">▼</span>
+            </button>
+            <div id="sort-menu" style="display:none;position:absolute;top:100%;right:0;background:var(--bg);border:1px solid var(--bdr);border-radius:var(--r);overflow:hidden;z-index:100;min-width:150px;box-shadow:var(--shadow-sm);margin-top:4px">
+              <button class="sort-menu-item" data-sort="newest" onclick="setSortBy('newest'); toggleSortMenu()" style="width:100%;text-align:left;padding:10px 12px;border:none;background:transparent;color:var(--txt);cursor:pointer;font-size:.85rem;transition:background .2s;border-bottom:1px solid var(--bdr2)" onmouseover="this.style.background='var(--bg2)'" onmouseout="this.style.background='transparent'">
+                Recently Added
+              </button>
+              <button class="sort-menu-item" data-sort="oldest" onclick="setSortBy('oldest'); toggleSortMenu()" style="width:100%;text-align:left;padding:10px 12px;border:none;background:transparent;color:var(--txt);cursor:pointer;font-size:.85rem;transition:background .2s;border-bottom:1px solid var(--bdr2)" onmouseover="this.style.background='var(--bg2)'" onmouseout="this.style.background='transparent'">
+                Earliest Added
+              </button>
+              <button class="sort-menu-item" data-sort="title-asc" onclick="setSortBy('title-asc'); toggleSortMenu()" style="width:100%;text-align:left;padding:10px 12px;border:none;background:transparent;color:var(--txt);cursor:pointer;font-size:.85rem;transition:background .2s;border-bottom:1px solid var(--bdr2)" onmouseover="this.style.background='var(--bg2)'" onmouseout="this.style.background='transparent'">
+                Name (A–Z)
+              </button>
+              <button class="sort-menu-item" data-sort="title-desc" onclick="setSortBy('title-desc'); toggleSortMenu()" style="width:100%;text-align:left;padding:10px 12px;border:none;background:transparent;color:var(--txt);cursor:pointer;font-size:.85rem;transition:background .2s" onmouseover="this.style.background='var(--bg2)'" onmouseout="this.style.background='transparent'">
+                Name (Z–A)
+              </button>
+            </div>
+          </div>
+          
           <!-- Add button (admin only) -->
           <button class="btn btn-p btn-sm admin-only" data-saved-display="inline-flex"
                   onclick="openAddModal()">+ Add Project</button>
@@ -512,6 +535,7 @@ const PH_ICONS = [
 
 /* ══ FILTER STATE ══════════════════════════════════════════════════════════ */
 let _activeFilter = 'All';
+let _sortBy = 'newest'; // 'newest' | 'oldest' | 'title-asc' | 'title-desc'
 
 function renderFilterPills() {
   const data = loadProj();
@@ -531,10 +555,91 @@ function setFilter(cat) {
   renderProj();
 }
 
+function setSortBy(sort) {
+  _sortBy = sort;
+  _projPage = 0; // Reset to first page when sorting
+  updateSortUI();
+  renderProj();
+}
+
+function updateSortUI() {
+  const btn = document.getElementById('sort-btn');
+  if (!btn) return;
+  
+  const sortLabels = {
+    'newest': 'Recently Added',
+    'oldest': 'Oldest First',
+    'title-asc': 'Name (A–Z)',
+    'title-desc': 'Name (Z–A)'
+  };
+  
+  btn.textContent = sortLabels[_sortBy] || 'Urutkan';
+  btn.innerHTML = (sortLabels[_sortBy] || 'Urutkan') + ' <span style="font-size:0.7rem">▼</span>';
+}
+
+function toggleSortMenu() {
+  const menu = document.getElementById('sort-menu');
+  if (!menu) return;
+  menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+  
+  // Close menu when clicking outside
+  if (menu.style.display === 'block') {
+    document.addEventListener('click', closeSortMenuOnClickOutside);
+  } else {
+    document.removeEventListener('click', closeSortMenuOnClickOutside);
+  }
+}
+
+function closeSortMenuOnClickOutside(event) {
+  const menu = document.getElementById('sort-menu');
+  const btn = document.getElementById('sort-btn');
+  if (menu && btn && !menu.contains(event.target) && !btn.contains(event.target)) {
+    menu.style.display = 'none';
+    document.removeEventListener('click', closeSortMenuOnClickOutside);
+  }
+}
+
 /* ══ PROJECT PAGINATION HELPERS ════════════════════════════ */
 function getFilteredProjects() {
   const allData = loadProj();
-  return _activeFilter === 'All' ? allData : allData.filter(p => p.category === _activeFilter);
+  let filtered = _activeFilter === 'All' ? allData : allData.filter(p => p.category === _activeFilter);
+  
+  // Apply sorting
+  filtered = filtered.slice(); // Create a copy to avoid mutating original
+  
+  switch(_sortBy) {
+    case 'newest':
+      // Sort by year descending (newest first), then by id if years are equal
+      filtered.sort((a, b) => {
+        const yearA = parseInt(a.year) || 0;
+        const yearB = parseInt(b.year) || 0;
+        if (yearA !== yearB) return yearB - yearA;
+        // If same year, maintain original order
+        return 0;
+      });
+      break;
+    case 'oldest':
+      // Sort by year ascending (oldest first), then by id if years are equal
+      filtered.sort((a, b) => {
+        const yearA = parseInt(a.year) || 0;
+        const yearB = parseInt(b.year) || 0;
+        if (yearA !== yearB) return yearA - yearB;
+        return 0;
+      });
+      break;
+    case 'title-asc':
+      // Sort by title A-Z
+      filtered.sort((a, b) => a.title.localeCompare(b.title));
+      break;
+    case 'title-desc':
+      // Sort by title Z-A
+      filtered.sort((a, b) => b.title.localeCompare(a.title));
+      break;
+    default:
+      break;
+  }
+  
+  return filtered;
 }
 
 function getProjPaginated() {
@@ -983,6 +1088,7 @@ function clearProjForm() {
 ════════════════════════════════════════════════════════════ */
 document.addEventListener('DOMContentLoaded', () => {
   initNav('projects');
+  updateSortUI();
   renderFilterPills();
   renderProj();
 });
