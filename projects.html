@@ -520,47 +520,55 @@ let _projCacheLoaded = false;
  */
 async function initProjCache() {
   if (_projCacheLoaded) {
-    console.log('[PROJ] Cache already loaded');
+    console.log('[PROJ] Cache already loaded, skipping...');
     return;
   }
   
+  console.log('[PROJ] Starting cache initialization...');
+  
   try {
-    console.log('[PROJ] Starting cache initialization...');
     const cloudData = await DataSync.loadFromCloud();
     const localData = DataSync.loadFromLocal();
     
+    console.log('[PROJ] Cloud:', cloudData ? cloudData.length : 0, 'projects');
+    console.log('[PROJ] Local:', localData ? localData.length : 0, 'projects');
+    
     // Always prefer cloud data if available
-    if (cloudData) {
-      console.log('[PROJ] ✓ Cloud data found:', cloudData.length, 'projects');
-      _projCache = DataSync.merge(cloudData, localData);
-    } else if (localData) {
-      console.log('[PROJ] ⚠ Using local data:', localData.length, 'projects');
+    if (cloudData && cloudData.length > 0) {
+      console.log('[PROJ] Using cloud data');
+      _projCache = cloudData.length > 0 ? cloudData : (localData || DEFAULT_PROJ);
+    } else if (localData && localData.length > 0) {
+      console.log('[PROJ] Using local data');
       _projCache = localData;
     } else {
-      console.warn('[PROJ] ✗ No data found, using DEFAULT');
+      console.warn('[PROJ] No cloud/local data found, using DEFAULT');
       _projCache = DEFAULT_PROJ;
     }
     
     _projCacheLoaded = true;
-    console.log('[PROJ] ✓ Cache ready:', _projCache.length, 'projects');
+    console.log('[PROJ] ✓ Cache ready with', _projCache.length, 'projects');
+    
   } catch (err) {
-    console.error('[PROJ] Failed to initialize cache:', err);
+    console.error('[PROJ] Error initializing cache:', err);
     _projCache = DEFAULT_PROJ;
     _projCacheLoaded = true;
+    console.log('[PROJ] Fallback to DEFAULT_PROJ');
   }
 }
 
 function loadProj() {
-  // Wait for cache to be initialized
+  // Always return cached data if ready, else DEFAULT
   if (!_projCacheLoaded) {
-    console.warn('[PROJ] Cache not loaded yet, returning DEFAULT');
+    console.warn('[PROJ] ⚠ Cache not ready, returning DEFAULT');
     return DEFAULT_PROJ;
   }
   
-  // Return cached data
-  const result = _projCache || DEFAULT_PROJ;
-  console.log('[PROJ] Loading', result.length, 'projects from cache');
-  return result;
+  if (!_projCache || _projCache.length === 0) {
+    console.warn('[PROJ] ⚠ Cache empty, returning DEFAULT');
+    return DEFAULT_PROJ;
+  }
+  
+  return _projCache;
 }
 
 /* ── LINK TYPE CONFIG ───────────────────────────────────── */
@@ -1142,13 +1150,25 @@ function clearProjForm() {
    INIT
 ════════════════════════════════════════════════════════════ */
 document.addEventListener('DOMContentLoaded', async () => {
+  console.log('[INIT] DOMContentLoaded fired');
+  
   // Load projects from data.json + localStorage
   await initProjCache();
+  console.log('[INIT] Cache initialization complete');
   
+  // Now initialize UI after cache is ready
   initNav('projects');
+  console.log('[INIT] Nav initialized');
+  
   updateSortUI();
+  console.log('[INIT] Sort UI updated');
+  
   renderFilterPills();
+  console.log('[INIT] Filter pills rendered');
+  
+  console.log('[INIT] About to render projects...');
   renderProj();
+  console.log('[INIT] Projects rendered');
 });
 </script>
 </body>
