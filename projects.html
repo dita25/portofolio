@@ -527,21 +527,14 @@ async function initProjCache() {
   console.log('[PROJ] Starting cache initialization...');
   
   try {
-    const cloudData = await DataSync.loadFromCloud();
-    const localData = DataSync.loadFromLocal();
+    // This will check localStorage FIRST, then cloud
+    const loadedData = await DataSync.load();
     
-    console.log('[PROJ] Cloud:', cloudData ? cloudData.length : 0, 'projects');
-    console.log('[PROJ] Local:', localData ? localData.length : 0, 'projects');
-    
-    // Always prefer cloud data if available
-    if (cloudData && cloudData.length > 0) {
-      console.log('[PROJ] Using cloud data');
-      _projCache = cloudData.length > 0 ? cloudData : (localData || DEFAULT_PROJ);
-    } else if (localData && localData.length > 0) {
-      console.log('[PROJ] Using local data');
-      _projCache = localData;
+    if (loadedData && loadedData.length > 0) {
+      _projCache = loadedData;
+      console.log('[PROJ] ✓ Loaded', _projCache.length, 'projects');
     } else {
-      console.warn('[PROJ] No cloud/local data found, using DEFAULT');
+      console.warn('[PROJ] No data loaded, using DEFAULT');
       _projCache = DEFAULT_PROJ;
     }
     
@@ -1085,7 +1078,7 @@ function saveProj() {
   // Save to localStorage and update cache
   DataSync.saveLocal(data);
   _projCache = data;
-  console.log(`[PROJ SAVED] Total projects: ${data.length}`);
+  console.log(`[PROJ SAVED] Total projects: ${data.length}, Data persisted to localStorage`);
   console.log('[PROJ DATA]', data);
   
   closeModal('modal-proj');

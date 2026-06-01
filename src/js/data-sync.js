@@ -95,21 +95,31 @@ const DataSync = {
   
   /**
    * Main load function - returns merged data
+   * PRIORITY: localStorage > cloud data
    */
   async load() {
-    const cloudData = await this.loadFromCloud();
+    // ALWAYS check localStorage first (user edits have priority!)
     const localData = this.loadFromLocal();
     
-    // If we have cloud data, use it as base and merge with local
-    if (cloudData) {
-      const merged = this.merge(cloudData, localData);
-      // Always keep local storage in sync with merged data
-      this.saveLocal(merged);
-      return merged;
+    if (localData && localData.length > 0) {
+      console.log('[DataSync] ✓ Using localStorage data:', localData.length, 'projects');
+      // Have local data, use it exclusively (don't merge)
+      return localData;
     }
     
-    // Fallback: just use local data or empty array
-    return localData || [];
+    // Only load cloud if localStorage is empty
+    console.log('[DataSync] localStorage empty, loading from cloud...');
+    const cloudData = await this.loadFromCloud();
+    
+    if (cloudData && cloudData.length > 0) {
+      console.log('[DataSync] ✓ Loaded from cloud:', cloudData.length, 'projects');
+      // Save cloud data to localStorage for next time
+      this.saveLocal(cloudData);
+      return cloudData;
+    }
+    
+    console.warn('[DataSync] No data found anywhere');
+    return [];
   },
   
   /**
