@@ -62,18 +62,23 @@ const GitHubSync = {
       const url = `${this.GITHUB_API}/repos/${this.REPO_OWNER}/${this.REPO_NAME}/contents/${this.FILE_PATH}?ref=${this.BRANCH}`;
       
       const response = await fetch(url, {
+        method: 'GET',
         headers: {
-          'Authorization': `Bearer ${token}`,
-          'Accept': 'application/vnd.github.v3+json'
+          'Authorization': `token ${token}`,
+          'Accept': 'application/vnd.github.v3+json',
+          'X-GitHub-Api-Version': '2022-11-28'
         }
       });
       
       if (!response.ok) {
         console.error('[GitHubSync] Failed to get file info:', response.status, response.statusText);
+        const errData = await response.json().catch(() => ({}));
+        console.error('[GitHubSync] Error details:', errData);
         return null;
       }
       
       const data = await response.json();
+      console.log('[GitHubSync] ✓ Got file SHA:', data.sha.substring(0, 8));
       return data; // Returns {name, path, sha, size, content, ...}
     } catch (err) {
       console.error('[GitHubSync] Error getting file info:', err.message);
@@ -111,8 +116,9 @@ const GitHubSync = {
       const response = await fetch(url, {
         method: 'PUT',
         headers: {
-          'Authorization': `Bearer ${token}`,
+          'Authorization': `token ${token}`,
           'Accept': 'application/vnd.github.v3+json',
+          'X-GitHub-Api-Version': '2022-11-28',
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
@@ -124,7 +130,7 @@ const GitHubSync = {
       });
       
       if (!response.ok) {
-        const errorData = await response.json();
+        const errorData = await response.json().catch(() => ({}));
         console.error('[GitHubSync] Push failed:', errorData);
         return { 
           success: false, 
