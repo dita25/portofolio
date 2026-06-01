@@ -10,8 +10,8 @@
  */
 
 const DataSync = {
-  // Path to the JSON data file
-  DATA_URL: './data.json',
+  // Path to the JSON data file - use absolute root path
+  DATA_URL: '/portofolio/data.json',
   GITHUB_API_URL: 'https://api.github.com/repos/', // Will be used with token
   PROJ_KEY: 'dita-projects',
   ETAG_KEY: 'dita-projects-etag',
@@ -23,14 +23,23 @@ const DataSync = {
    */
   async loadFromCloud() {
     try {
-      const response = await fetch(this.DATA_URL);
+      // Try multiple paths in case of deployment variations
+      let response = await fetch(this.DATA_URL + '?t=' + Date.now()); // Add timestamp to bypass cache
+      
+      if (!response.ok) {
+        // Fallback: try relative path
+        console.warn('[DataSync] Trying fallback path...');
+        response = await fetch('./data.json?t=' + Date.now());
+      }
+      
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
       
       const data = await response.json();
-      console.log('[DataSync] Loaded from data.json:', data.length, 'projects');
+      console.log('[DataSync] ✓ Loaded from data.json:', data.length, 'projects');
       return data;
     } catch (err) {
-      console.warn('[DataSync] Failed to load data.json, using localStorage fallback:', err.message);
+      console.error('[DataSync] ✗ Failed to load data.json:', err.message);
+      console.log('[DataSync] Will use localStorage fallback');
       return null;
     }
   },

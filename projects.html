@@ -8,6 +8,9 @@
   <meta property="og:title" content="Projects — Dita Anggraini"/>
   <meta property="og:description" content="Showcase of completed data and development projects."/>
   <meta property="og:url" content="https://ditaanggraini.com/projects"/>
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
+  <meta http-equiv="Pragma" content="no-cache"/>
+  <meta http-equiv="Expires" content="0"/>
   <title>Projects — Dita Anggraini</title>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
@@ -516,11 +519,30 @@ let _projCacheLoaded = false;
  * Initialize projects cache from data.json on page load
  */
 async function initProjCache() {
-  if (_projCacheLoaded) return;
+  if (_projCacheLoaded) {
+    console.log('[PROJ] Cache already loaded');
+    return;
+  }
+  
   try {
-    _projCache = await DataSync.load();
+    console.log('[PROJ] Starting cache initialization...');
+    const cloudData = await DataSync.loadFromCloud();
+    const localData = DataSync.loadFromLocal();
+    
+    // Always prefer cloud data if available
+    if (cloudData) {
+      console.log('[PROJ] ✓ Cloud data found:', cloudData.length, 'projects');
+      _projCache = DataSync.merge(cloudData, localData);
+    } else if (localData) {
+      console.log('[PROJ] ⚠ Using local data:', localData.length, 'projects');
+      _projCache = localData;
+    } else {
+      console.warn('[PROJ] ✗ No data found, using DEFAULT');
+      _projCache = DEFAULT_PROJ;
+    }
+    
     _projCacheLoaded = true;
-    console.log('[PROJ] Cache initialized:', _projCache.length, 'projects');
+    console.log('[PROJ] ✓ Cache ready:', _projCache.length, 'projects');
   } catch (err) {
     console.error('[PROJ] Failed to initialize cache:', err);
     _projCache = DEFAULT_PROJ;
@@ -529,13 +551,16 @@ async function initProjCache() {
 }
 
 function loadProj() {
-  // Return cached data, or DEFAULT_PROJ if not yet initialized
-  if (_projCacheLoaded) {
-    return _projCache || DEFAULT_PROJ;
+  // Wait for cache to be initialized
+  if (!_projCacheLoaded) {
+    console.warn('[PROJ] Cache not loaded yet, returning DEFAULT');
+    return DEFAULT_PROJ;
   }
-  // Fallback: try localStorage first, then DEFAULT_PROJ
-  const raw = Store.get(PROJ_KEY, null);
-  return raw === null ? DEFAULT_PROJ : raw;
+  
+  // Return cached data
+  const result = _projCache || DEFAULT_PROJ;
+  console.log('[PROJ] Loading', result.length, 'projects from cache');
+  return result;
 }
 
 /* ── LINK TYPE CONFIG ───────────────────────────────────── */
