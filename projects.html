@@ -401,6 +401,7 @@
 
 <script src="src/js/constants.js"></script>
 <script src="src/js/shared.js"></script>
+<script src="src/js/data-sync.js"></script>
 <script src="src/js/cloudinary-client.js"></script>
 <script src="src/js/image-upload-handler.js"></script>
 <script src="src/js/debug-storage.js"></script>
@@ -506,7 +507,33 @@ const DEFAULT_PROJ = [
 ];
 
 const PROJ_KEY = 'dita-projects';
+
+// Global cache for projects (loaded from data.json + localStorage)
+let _projCache = null;
+let _projCacheLoaded = false;
+
+/**
+ * Initialize projects cache from data.json on page load
+ */
+async function initProjCache() {
+  if (_projCacheLoaded) return;
+  try {
+    _projCache = await DataSync.load();
+    _projCacheLoaded = true;
+    console.log('[PROJ] Cache initialized:', _projCache.length, 'projects');
+  } catch (err) {
+    console.error('[PROJ] Failed to initialize cache:', err);
+    _projCache = DEFAULT_PROJ;
+    _projCacheLoaded = true;
+  }
+}
+
 function loadProj() {
+  // Return cached data, or DEFAULT_PROJ if not yet initialized
+  if (_projCacheLoaded) {
+    return _projCache || DEFAULT_PROJ;
+  }
+  // Fallback: try localStorage first, then DEFAULT_PROJ
   const raw = Store.get(PROJ_KEY, null);
   return raw === null ? DEFAULT_PROJ : raw;
 }
@@ -1022,8 +1049,9 @@ function saveProj() {
     }
   }
   
-  // Save to localStorage
-  Store.set(PROJ_KEY, data);
+  // Save to localStorage and update cache
+  DataSync.saveLocal(data);
+  _projCache = data;
   console.log(`[PROJ SAVED] Total projects: ${data.length}`);
   console.log('[PROJ DATA]', data);
   
@@ -1063,7 +1091,9 @@ function editProj(id) {
 
 function deleteProj(id) {
   if (!confirm('Hapus project ini?')) return;
-  Store.set(PROJ_KEY, loadProj().filter(p => p.id !== id));
+  const updatedData = loadProj().filter(p => p.id !== id);
+  DataSync.saveLocal(updatedData);
+  _projCache = updatedData;
   showToast('Project dihapus.');
   _projPage = 0;
   renderFilterPills();
@@ -1086,7 +1116,10 @@ function clearProjForm() {
 /* ══════════════════════════════════════════════════════════
    INIT
 ════════════════════════════════════════════════════════════ */
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+  // Load projects from data.json + localStorage
+  await initProjCache();
+  
   initNav('projects');
   updateSortUI();
   renderFilterPills();
