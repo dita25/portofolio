@@ -264,6 +264,12 @@
           <!-- Add button (admin only) -->
           <button class="btn btn-p btn-sm admin-only" data-saved-display="inline-flex"
                   onclick="openAddModal()">+ Add Project</button>
+          
+          <!-- GitHub Sync button (admin only) -->
+          <button class="btn btn-s btn-sm admin-only" data-saved-display="inline-flex"
+                  onclick="setupGitHubSync()" title="Setup GitHub token untuk auto-sync">
+            <span id="github-sync-status">🔗 GitHub</span>
+          </button>
         </div>
       </div>
       <div class="pgrid" id="proj-list"></div>
@@ -405,6 +411,7 @@
 <script src="src/js/constants.js"></script>
 <script src="src/js/shared.js"></script>
 <script src="src/js/data-sync.js"></script>
+<script src="src/js/github-sync.js"></script>
 <script src="src/js/cloudinary-client.js"></script>
 <script src="src/js/image-upload-handler.js"></script>
 <script src="src/js/debug-storage.js"></script>
@@ -1081,6 +1088,22 @@ function saveProj() {
   console.log(`[PROJ SAVED] Total projects: ${data.length}, Data persisted to localStorage`);
   console.log('[PROJ DATA]', data);
   
+  // Try to sync to GitHub if token available
+  if (GitHubSync.hasToken()) {
+    console.log('[PROJ] Syncing to GitHub...');
+    GitHubSync.pushToGithub(data, editId ? `Update: ${title}` : `Add: ${title}`).then(result => {
+      if (result.success) {
+        console.log('[PROJ] ✓ GitHub sync successful');
+        showToast('✓ GitHub juga terupdate!', 3000);
+      } else {
+        console.warn('[PROJ] GitHub sync failed:', result.error);
+        showToast('⚠ Tersimpan lokal, tapi GitHub gagal: ' + result.error, 4000);
+      }
+    });
+  } else {
+    console.log('[PROJ] No GitHub token - local save only');
+  }
+  
   closeModal('modal-proj');
   clearProjForm();
   _projPage = 0;
@@ -1120,10 +1143,60 @@ function deleteProj(id) {
   const updatedData = loadProj().filter(p => p.id !== id);
   DataSync.saveLocal(updatedData);
   _projCache = updatedData;
+  
+  // Sync delete to GitHub if token available
+  if (GitHubSync.hasToken()) {
+    console.log('[PROJ] Syncing delete to GitHub...');
+    GitHubSync.pushToGithub(updatedData, `Delete project: ${id}`).then(result => {
+      if (result.success) {
+        console.log('[PROJ] ✓ GitHub sync successful');
+      } else {
+        console.warn('[PROJ] GitHub sync failed:', result.error);
+        showToast('⚠ Dihapus lokal, tapi GitHub gagal: ' + result.error, 4000);
+      }
+    });
+  }
+  
   showToast('Project dihapus.');
   _projPage = 0;
   renderFilterPills();
   renderProj();
+}
+
+/**
+ * Setup GitHub token for auto-sync
+ */
+function setupGitHubSync() {
+  if (GitHubSync.hasToken()) {
+    // Token already set, offer to clear or keep
+    const choice = confirm('GitHub token sudah aktif.\n\n[OK] untuk ganti token\n[Cancel] untuk tidak berubah');
+    if (!choice) return;
+    GitHubSync.clearToken();
+  }
+  
+  // Prompt for token
+  if (GitHubSync.promptForToken()) {
+    updateGitHubSyncUI();
+    showToast('✓ GitHub token saved! Edits akan auto-sync ke data.json', 4000);
+  } else {
+    showToast('Token tidak disimpan', 3000);
+  }
+}
+
+/**
+ * Update GitHub sync UI status
+ */
+function updateGitHubSyncUI() {
+  const statusBtn = document.getElementById('github-sync-status');
+  if (!statusBtn) return;
+  
+  if (GitHubSync.hasToken()) {
+    statusBtn.textContent = '✓ GitHub Connected';
+    statusBtn.parentElement.style.opacity = '1';
+  } else {
+    statusBtn.textContent = '🔗 GitHub';
+    statusBtn.parentElement.style.opacity = '0.7';
+  }
 }
 
 function clearProjForm() {
@@ -1158,6 +1231,10 @@ document.addEventListener('DOMContentLoaded', async () => {
   
   renderFilterPills();
   console.log('[INIT] Filter pills rendered');
+  
+  // Update GitHub sync UI status
+  updateGitHubSyncUI();
+  console.log('[INIT] GitHub sync UI updated');
   
   console.log('[INIT] About to render projects...');
   renderProj();
